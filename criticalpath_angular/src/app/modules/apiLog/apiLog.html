@@ -1,0 +1,90 @@
+
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>API Logs</h1>
+	</section>
+	
+	<!-- Main content -->
+	<section class="content">
+
+		<!-- Default box -->
+		<div class="box">
+			<div class="box-header with-border">
+				<h3 class="box-title">Search By Transaction Or Message ID</h3>
+			</div>
+			<div class="box-body">
+				<div class="table-search">
+					<table>
+						<tr>
+							<td><label class="search-label"><b>Search :</b></label>
+								<div class="input-group">
+									<input class="form-control input-sm" [(ngModel)]="searchString"
+										type="text" name="searchText"
+										placeholder="Transaction Id or Message Id"
+										title="Search By Transaction Id or Message Id"
+										(keyup)="searchByTransOrMsgId()">
+								</div></td>
+							<td><label class="search-label"
+								style="margin-top: 11px; margin-left: 50px;"><b>Search
+										Date :</b></label>
+								<div class="input-group">
+									<input _ngcontent-c1 class="form-control" id="completedt"
+										onkeypress="return false;" data-provide="datepicker"
+										name="taskCompleteDate" 
+										class="btn-lg" placeholder="Select Date"
+										style="color: transparent; text-shadow: 0 0 0 grey; color: transparent; text-shadow: 0 0 0 grey; border: 1px solid #c9c9c9; border-radius: 100px; outline: none; font-size: 13px; padding: 14px; z-index: 777; background-color: transparent; cursor: pointer; -webkit-appearance: none; font-family: 'open_sansregular'; color: grey;"
+										readonly="readonly">
+										
+								</div>
+						    </td>
+							<td>
+								<div *ngIf="showLoader" style="margin-left: 190px;">
+									<i class="fa fa-spin fa-refresh"></i>&nbsp; Loading...
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<br>
+
+				<table id="apiLogTable" class="table table-bordered table-striped"
+					width="100%">
+					<thead>
+						<tr>
+							<th width="7%">Msg ID</th>
+							<th width="6%">Module</th>
+							<th width="15%">Third Party Id</th>
+							<th width="15%">Status</th>
+							<th width="7%">Action By</th>
+							<th width="50%">Remark</th>
+						</tr>
+					</thead>
+					<tbody *ngFor="let logs of loggerList">
+						<tr *ngFor="let log of logs">
+							<td width="7%">{{log.msgId}}</td>
+							<td width="6%">{{log.module}}</td>
+							<td width="15%">{{log.thirdPartyId}}</td>
+							<td width="15%">{{log.status}}</td>
+							<td width="7%">{{log.actionBy}}</td>
+							<td width="50%" style="word-break: break-word;">{{log.remark}}</td>
+							<!-- <td width="50%" *ngIf="log.status == 'Received'">-</td>
+							<td width="50%" *ngIf="log.status !== 'Received'">{{log.remark}}</td> -->
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- <td>{{log.remark}}</td> -->
+
+
+			</div>
+			<!-- /.box-body -->
+			<div class="box-footer"></div>
+			<!-- /.box-footer-->
+		</div>
+		<!-- /.box -->
+
+	</section>
+	<!-- /.content -->
+
+</div>

@@ -1,0 +1,465 @@
+<div class="acermans-page viewallstocktakecycle">
+  <div class="box_shadow">
+    <div class="container">
+      <nav class="top_navbar navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" [routerLink]="['/ackermanPage']"><img class="header_image" src="../../assets/images/RM_Desktop/logo.svg" alt="logo"  height="36"></a>
+        <div class="navbar" role="navigation">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+          </div>
+          <div class="navbar-collapse collapse navbar-right">
+            <ul class="nav navbar-nav">
+              <li>
+                <a href="javascript:void(0)" (click)="logout()"> SIGN OUT </a>
+              </li>              
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <!--Content-->
+  <!-- ----Modal----- -->
+  <div class="tacker_page_modal" >
+    <div class="modal fade"  id="showIfNotCompletedBySmModal" *ngIf="userRole === 'ROLE_SM_USER' "  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document" >
+        <div class="modal-content" >
+          <div>
+            <div class="modal-header"  >
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i _ngcontent-c1="" aria-hidden="true" class="fa fa-times"></i>
+              </button>
+              <h5 class="modal-title" id="showIfNotCompletedBySmModal">Complete Task {{taskId}} </h5>
+              
+            </div>
+
+            <form #add="ngForm" [formGroup]="addTaskCompleteForm"  > 
+              <div class="modal-body"  >
+                <div class="calender_align">
+                  <p class="modal_margin_right">When was the task completed:</p>
+                  <input id="completedt" onkeypress="return false;" formControlName="taskCompleteDate"  data-provide="datepicker"  name ="taskCompleteDate" class="btn-lg" placeholder="Select Date" style="color: transparent;text-shadow: 0 0 0 grey;" readonly="readonly">  
+                  <img class="modal_calendar_align" src="../../assets/images/RM_Desktop/calendar-date.png"><br>
+                </div>
+                <label [ngClass]="{ 'has-error' : dateValidateFlag}" style="position: relative;top: -10px;left: -80px;text-align: right;" *ngIf="dateValidateFlag">Select Valid Date.</label>
+                <div class="calender_align">
+                  <p class="modal_margin_right">Who completed the task: </p>
+                  <input type="text" class="btn-lg" placeholder="Enter Name"  formControlName="name"  name ="name" [(ngModel)] = "name">
+                </div><br/>          
+                <div [hidden]="nameOld !== null" class="content_padding text-center" data-dismiss="modal">            
+                  <button class=" btn btn-lg"  style="background-color: #019441;color: white" [disabled]="!add.valid ||  dateValidateFlag" (click)="saveData()" >COMPLETE TASK</button> 
+                </div>
+              </div>
+            </form> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="tacker_page_modal" > 
+    <div class="modal fade" id="showIfCompletedBySmModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document" >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i _ngcontent-c1="" aria-hidden="true" class="fa fa-times"></i>
+            </button>
+            <h5 class="modal-title" id="exampleModalLabel">Complete Task {{taskId}}</h5>
+            
+          </div>
+
+          <!--   <form #add="ngForm" [formGroup]="addTaskCompleteForm">  -->
+            <div class="modal-body" >
+              <div class="calender_align">
+                <p class="modal_margin_right">When was the task completed:</p>
+                <input onkeypress="return false;" disabled="true"  name ="taskCompleteDate" [(ngModel)] = "taskCompleteDate" class="btn-lg" placeholder="Select Date" style=" color: transparent;text-shadow: 0 0 0 grey;" readonly="readonly">  
+                <img class="modal_calendar_align" src="../../assets/images/RM_Desktop/calendar-date.png"><br>
+              </div>
+              <label [ngClass]="{ 'has-error' : dateValidateFlag}" style="margin-left: 270px;margin-top: -25px;margin-bottom: 15px;" *ngIf="dateValidateFlag">Select Valid Date.</label>
+              <div class="calender_align">
+                <p class="modal_margin_right">Who completed the task:</p>
+                <input type="text" class="btn-lg" placeholder="Enter Name" disabled="true" name ="name" [(ngModel)] = "name">
+              </div><br/>          
+           <!--  <div [hidden]="nameOld !== null" class="content_padding text-center" data-dismiss="modal">             
+              <button class=" btn btn-lg"  style="background-color: #019441;color: white" [disabled]="!add.valid" (click)="saveData()" >COMPLETE TASK</button>            
+            </div> -->
+          </div>
+          <!--   </form>  -->
+          
+        </div>
+      </div>
+    </div>
+  </div>    
+  
+  <div class="tacker_page_modal modaldesign" style="">
+    <div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i _ngcontent-c1="" aria-hidden="true" class="fa fa-times"></i>
+            </button>
+            <h5 class="modal-title" id="">STOCK TAKE RESULT DECLINED</h5>
+            
+          </div>
+          
+          <div class="modal-body">
+            <div class="form-group">
+              <textarea name="" id="" class="form-control" cols="" rows="3" [(ngModel)] = "reasonForDecline" placeholder="Reason for Declained"></textarea>
+            </div>
+            <div class="form-group">
+              <button class="form-control btn btn-success" data-dismiss="modal" [disabled]="reasonForDecline == null"  (click)="saveApproveStatus('D')">SUBMIT STOCK TAKE DATE</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+ <!--   <div class="tacker_page_modal" > 
+      <div class="modal fade" id="declineModal_working" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document" >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="declineModal">STOCK TAKE RESULT DECLINED</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i _ngcontent-c1="" aria-hidden="true" class="fa fa-times"></i>
+            </button>
+          </div>
+
+         <form #add="ngForm" [formGroup]="addDeclineform"> 
+          <div class="modal-body" >
+            <div class="calender_align">
+              <p class="modal_margin_right">Who completed the task:</p>
+              <textarea class="btn-lg" placeholder="Reason For Declined" [(ngModel)] = "reasonForDecline" ></textarea>
+            </div><br/>          
+            <div  class="content_padding text-center" data-dismiss="modal">             
+              <button class=" btn btn-lg"  style="background-color: #019441;color: white"  (click)="saveApproveStatus('D')" >SUBMIT</button>            
+          </div>
+          </div>
+          </form> 
+       
+        </div>
+      </div>
+    </div>
+  </div>  -->  
+  
+  <div class="cp_page_modal stock-result cp">
+    <div _ngcontent-c1="" class="modal fade critical_path_modal" id="stockTakeResult">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <i _ngcontent-c1="" aria-hidden="true" class="fa fa-times"></i>
+            </button>
+            <h5 class="modal-title" id="">New Stock take Result</h5>
+            
+          </div>
+          <div class="modal-body">
+            <div class="stock-result-table table-responsive">
+              <table class="table restext" width="100%">
+                <tr>
+                  <td width="50%">
+                    <table class="table restext">
+                      <tr>
+                        <td>Store No</td>
+                        <td>{{storeNo}}</td>
+                      </tr>
+                      <tr>
+                        <td>Store Name</td>
+                        <td class="text-green">{{storeNamePopupBox}}</td>
+                      </tr>
+                      <tr>
+                        <td>Analysed By</td>
+                        <td>{{analysedBy}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="50%">
+                    <table class="table restext">
+                      <tr>
+                        <td>Previous Count Date</td>
+                        <td>{{prevoiusCountDate | date:'dd MMM yy'}} {{prevCountDateTime}}</td>
+                      </tr>
+                      <tr>
+                        <td>Current Count Date</td>
+                        <td>{{currentCountDate | date:'dd MMM yy'}} {{currentCountDateTime}}</td>
+                      </tr>
+                      <tr>
+                        <td>Calculated Date</td>
+                        <td>{{calculatedDate | date:'dd MMM yy'}}</td>
+                      </tr>
+                      <tr>
+                        <td>Approx Months</td>
+                        <td>{{approxMonth}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="stock-result-table table-responsive p25">
+              <table class="table table-bordered shrinkage-calculation mb25" width="100%">
+                <tr>
+                  <td colspan="3" class="bg-green" width="100%" align="center">Shrinkage Calculation</td>
+                </tr>
+                <tr>
+                  <td class="w33" align="center">Details</td>
+                  <td class="w33" align="center">Amount</td>
+                  <td class="w33" align="center">Notes</td>
+                </tr>
+                <tr class="bg-white">
+                  <td class="w33">Stock Count Result @ Cost</td>
+                  <td class="w33" align="right">{{stockCountResultCost}}</td>
+                  <td class="w33">{{stockCountResultCostNotes}}</td>
+                </tr>
+
+                <tr class="bg-white">
+                  <td class="w33">Cell Reg Stock Ajustment</td>
+                  <td class="w33" align="right">{{cellRegStockAdj}}</td>
+                  <td class="w33">{{cellRegAdjNote}}</td>
+                </tr>
+
+                <tr class="bg-white">
+                  <td class="w33">Total Shrinkage Ajustment</td>
+                  <td class="w33" align="right">{{totalShrinkageAdj}}</td>
+                  <td class="w33"></td>
+                </tr>
+
+                <tr class="bg-white">
+                  <td class="w33">Minus Swell Allowance</td>
+                  <td class="w33" align="right">{{minusSwellAllowance}}</td>
+                  <td class="w33">{{minusSwellNotes}}</td>
+                </tr>
+              </table>
+
+
+              <table class="table shrinkage-calculation restext mb25 w66">
+                <tr>
+                  <td class="bg-gray bright w50">Total Shrinkage after Swell Allowance</td>
+                  <td class="bg-gray w50" align="right">{{totalShrinkage}}</td>
+                </tr>
+              </table>
+
+              <table class="table table-bordered shrinkage-calculation mb25"  width="100%">
+                <tr class="bg-white">
+                  <td class="w33">Sales Including VAT</td>
+                  <td class="w33" align="right">{{salesIncludeVat}}</td>
+                  <td class="w33">{{salesIncNote}}</td>
+                </tr>
+                <tr>
+                  <td class="bg-gray bright w33">Sales Excluding VAT</td>
+                  <td class="bg-gray w33" align="right">{{salesExcludeVat}}</td>
+                  <td class="bg-white w33">{{salesExcludeVatNotes}}</td>
+                </tr>
+              </table>
+
+              <table class="table restext shrinkage-calculation" width="100%">
+                <tr>
+                  <td class="bg-green bright w33">Shrinkage %</td>
+                  <td class="bg-green w33" align="right">{{shrinkageper}}</td>
+                  <td class="p0 w33" align="right">
+                    <ul class="list-inline m0">
+                      <li><a href="javascript:void(0)"   data-dismiss="modal" data-toggle="modal" data-target="#declineModal" class="btn btn-red-round">Decline</a></li>
+                      <li><a href="javascript:void(0)" data-dismiss="modal" (click)="saveApproveStatus('A')" class="btn btn-green-round">Approve</a></li>
+                    </ul>
+                  </td>
+                </tr>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End -->
+  <div class="rm_date_tracker_page pageHeight">
+    <div class="container">
+      <div class="section_padding" style="padding: 0;">
+        <div class="top_content">
+         <h2 class="cp_page_section_padding border_bottom mt15 div_padding">
+          <span class="vsname">{{storeName}}</span>
+          <div *ngIf="showLoader" class="grey_1" style="font-size : large; margin-left: 486px;">
+           <i class="fa fa-spin fa-refresh grey_1"></i>&nbsp; Loading...
+         </div>
+         <div class="align_date float_right content-centertext">
+           <p class="grey_1 t-uppercase">Stock Take date:</p>
+           <span class="margin_left top_time_only">{{stockTakeDateDisplay}}</span> <br>
+           <p class="back-to-branch text-green"
+           *ngIf="userRole ==='ROLE_RAM_USER' || userRole=='ROLE_DSM_USER'"
+           [routerLink]="['/ackermanPage/ackermanViewAllBranchesComponent']">
+           << BACK TO BRANCHES</p>
+         </div>
+
+       </h2>
+       <div *ngIf="resultMessageTitle != '' && userRole === 'ROLE_SM_USER' " class="alert alert-success custom-success row">
+        <div class="col-sm-10">
+         <img src="../../assets/images/notification.png" />{{resultMessageTitle}}
+       </div>
+       <div class="col-sm-2">
+         <span class=""><a href="javascript:void(0)"
+          class="btn btn-green-round" data-toggle="modal"
+          *ngIf="displayStatus === null" data-target="#stockTakeResult">View</a></span>
+          <h4 *ngIf="displayStatus !== null" class="text-green">{{displayStatus}}</h4>
+        </div>
+      </div> 
+      <!-- <div class="clear-fix"></div> -->
+    </div>
+    
+    
+    <div class="ganntt_chart">
+      <div class="rowdiv">
+        
+        <div class="smallBox bg_green" *ngFor="let item of stockTakeCycleLength(cycleLength); let i = index;">{{cycleLength-i}}</div>
+      </div>
+              
+              <div class="border_in_mobile" *ngFor="let criticalPathData of criticalPathList; let j = index;">
+                <div class="description_section align_item">
+                  <h5>Task {{j+1}}</h5> <p>{{criticalPathData.title}}</p>
+                  <h3 class="hide text-center">Days to Complete</h3>
+                </div>
+
+                <div *ngIf="criticalPathData.status.id === 6 || criticalPathData.status.id === 2 || criticalPathData.status.id === 3 ; then showPopup else notShowPopup"></div>
+                
+                
+                
+                <ng-template #showPopup >
+                  <ng-container *ngIf="criticalPathData.completeDate === null; then showIfNotCompletedBySM else showIfCompletedBySM">
+                  </ng-container>
+                </ng-template>
+                
+                <ng-template #showIfNotCompletedBySM >
+                  <ng-container *ngIf="criticalPathData.status.id === 3; then showpopupBySM else notShowpopupBySM">
+                  </ng-container>
+                  <!-- <div class="rowdiv" data-toggle="modal" data-target="#showIfNotCompletedBySmModal">
+                    <ng-container  *ngFor="let item of stockTakeCycleLength(cycleLength); let i = index;">               
+                      <div [ngClass]="{
+                         'bg_grey' : i+1 !== criticalPathData.startDay,
+                         'bg_yellow' : ((i+1) >= criticalPathData.startDay) && ((i+1) < (criticalPathData.startDay + criticalPathData.length)) && criticalPathData.status.id === 3 ,
+                         'bg_yellow2' : todayDate?.toString().substr(0,15) === cycleDateList[i]?.toString().substr(0,15) && ((i+1) >= criticalPathData.startDay) && ((i+1) < (criticalPathData.startDay + criticalPathData.length)) && criticalPathData.status.id == 3,
+                         'bg_green' : ((i+1) >= criticalPathData.startDay) && ((i+1) < (criticalPathData.startDay + criticalPathData.length)) && (criticalPathData.status.id === 6 || criticalPathData.status.id === 2),
+                         'bg_selected' : todayDate.toString().substr(0,15) === cycleDateList[i]?.toString().substr(0,15)                    
+                  }"  class="smallBox" id="getbox">
+                  <div *ngIf = "(((i+1) >= criticalPathData.startDay) && ((i+1) < (criticalPathData.startDay + criticalPathData.length)) )">{{cycleDateList[i] | date: 'dd/MM'}}</div>                    
+                      </div>
+                        <div [ngClass]="{
+                         'bg_grey' : i+1 !== criticalPathData.startDay,
+                         'bg_yellow' : ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && criticalPathData.status.id === 3 ,
+                         'bg_yellow2' : todayDate?.toString().substr(0,15) === cycleDateList[i]?.toString().substr(0,15) && ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && criticalPathData.status.id == 3,
+                         'bg_green' : ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && (criticalPathData.status.id === 6 || criticalPathData.status.id === 2),
+                         'bg_selected' : todayDate === cycleDateList[i]                     
+                  }"   (click)="checkColor(criticalPathData.id,j+1,$event ,i)"  class="smallBox" id="getbox">
+                  <div *ngIf = "((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1))">{{cycleDateList[i] | date: 'dd/MM'}}</div>                    
+                      </div>
+                    </ng-container>
+                 </div> -->
+               </ng-template>
+               
+               <ng-template #showpopupBySM>
+                 <div class="rowdiv" data-toggle="modal" data-target="#showIfNotCompletedBySmModal">
+                  <ng-container  *ngFor="let item of stockTakeCycleLength(cycleLength); let i = index;">               
+                   <div [ngClass]="{
+                   'bg_grey' : i+1 !== criticalPathData.startDay,
+                   'bg_yellow' : ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && criticalPathData.status.id === 3 ,
+                   'bg_yellow2' : todayDate?.toString().substr(0,15) === cycleDateList[i]?.toString().substr(0,15) && ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && criticalPathData.status.id == 3,
+                   'bg_green' : ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && (criticalPathData.status.id === 6 || criticalPathData.status.id === 2),
+                   'bg_selected' : todayDate === cycleDateList[i]                     
+                 }"   (click)="checkColor(criticalPathData.id,j+1,$event ,i)"  class="smallBox" id="getbox">
+                 <div *ngIf = "((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1))">{{cycleDateList[i] | date: 'dd/MM'}}</div>                     
+               </div>
+             </ng-container>
+           </div>
+         </ng-template>
+         
+         <ng-template #notShowpopupBySM>
+           <div class="rowdiv">
+            <ng-container  *ngFor="let item of stockTakeCycleLength(cycleLength); let i = index;">               
+             <div [ngClass]="{
+             'bg_grey' : i+1 !== criticalPathData.startDay,
+             'bg_yellow' : ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && criticalPathData.status.id === 3 ,
+             'bg_yellow2' : todayDate?.toString().substr(0,15) === cycleDateList[i]?.toString().substr(0,15) && ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && criticalPathData.status.id == 3,
+             'bg_green' : ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && (criticalPathData.status.id === 6 || criticalPathData.status.id === 2),
+             'bg_selected' : todayDate === cycleDateList[i]                     
+           }"   (click)=" checkColor(criticalPathData.id,j+1,$event ,i)"  class="smallBox" id="getbox">
+           <div *ngIf = "((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1))">{{cycleDateList[i] | date: 'dd/MM'}}</div>                     
+         </div>
+       </ng-container>
+     </div>
+   </ng-template>
+   
+   <ng-template #showIfCompletedBySM>
+     <div (click)="checkColor(criticalPathData.id,j+1,$event,i)" class="rowdiv" data-toggle="modal" data-target="#showIfCompletedBySmModel">
+      <ng-container  *ngFor="let item of stockTakeCycleLength(cycleLength); let i = index;">               
+       <div [ngClass]="{
+       'bg_grey' : i+1 !== criticalPathData.startDay,
+       'bg_green' : ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && (criticalPathData.status.id === 6 || criticalPathData.status.id === 2),
+       'bg_selected' : todayDate === cycleDateList[i]                     
+     }"  class="smallBox" id="getbox">
+     <div *ngIf = "((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1))">{{cycleDateList[i] | date: 'dd/MM'}}</div>                     
+   </div>
+ </ng-container>
+</div>
+</ng-template>
+
+<ng-template #notShowPopup>
+ <div (click)="checkColor(criticalPathData.id,i+1,$event)" class="rowdiv">
+   <ng-container  *ngFor="let item of stockTakeCycleLength(cycleLength); let i = index;">               
+     <div [ngClass]="{
+     'bg_grey' : i+1 !== criticalPathData.startDay,
+     'bg_red' : ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && (criticalPathData.status.id !== 2 || criticalPathData.status.id !== 3 || criticalPathData.status.id !== 6),
+     'bg_selected' : todayDate === cycleDateList[i]                                                                     
+   }"  class="smallBox" id="getbox">                  
+   <div *ngIf = "((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1))">{{cycleDateList[i] | date: 'dd/MM'}}</div>                     
+ </div>
+</ng-container>
+</div>
+</ng-template>
+</div>    
+
+</div>
+</div>
+</div>
+</div>
+<!--ENd Content-->
+<div id="footer" class="footer">
+  <div class="container">
+    <p>ALL RIGHTS RESERVED 2013 - 2019</p>
+  </div>
+</div>
+</div>
+<script type="text/javascript">
+ $(document).ready(larg);
+
+ $(window).resize(larg);
+
+ function larg(){
+  if ( $(window).width() < 1200 && $(window).width() > 1024 ) {    
+    $( window ).resize(function() {
+      $(".text_change").html("Dawie Harmse...");
+    });
+
+  }
+  else if($(window).width() < 1024 && $(window).width() > 375){
+    $( window ).resize(function() {
+      $(".text_change").html("Dawie...");
+      $(".text_change2").html("Dawie...");
+    });
+  }
+  else if($(window).width() < 375){
+    $( window ).resize(function() {
+      $(".text_change").html("Daw...");
+      $(".text_change2").html("Daw...");
+    });
+  }
+  else {
+    $( window ).resize(function() {
+     $(".text_change").html("<span class='text_change'>Dawie Harmse 16:30; 12 Sept...</span>");
+   });
+  }
+}
+
+</script>

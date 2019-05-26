@@ -1,0 +1,51 @@
+<div class="login-box">
+	<div class="login-logo">
+		<a href=""><b>Critical Path</b></a>
+	</div>
+	<div class="login-box-body">
+		<div *ngIf="error && error.length > 0"
+			class="alert alert-danger alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-hidden="true" (click)="error=undefined">×</button>
+			{{error}}
+		</div>
+		<p class="login-box-msg">Sign in to start your session</p>
+
+		<form class="ng-pristine ng-valid" novalidate [formGroup]="loginForm"
+			class="form-div" (ngSubmit)="submitForm()">
+			<div class="form-group has-feedback"
+				[ngClass]="{ 'has-error' : (loginForm.controls.agentId.invalid && requiredFlag) || loginForm.controls['agentId'].hasError('pattern')}">
+
+				<input type="email" name="agentId" class="form-control"
+					placeholder="Email" formControlName="agentId"
+					pattern="^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$"
+					required> 
+					<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+
+				<label
+					[ngClass]="{ 'has-error' : (loginForm.controls.agentId.invalid && requiredFlag) || loginForm.controls['agentId'].hasError('pattern')}"
+					*ngIf="(loginForm.controls.agentId.invalid && requiredFlag) || loginForm.controls['agentId'].hasError('pattern')">
+					Please enter valid email. </label>
+
+			</div>
+
+			<div class="form-group has-feedback"
+				[ngClass]="{ 'has-error' : loginForm.controls.password.invalid && requiredFlag }">
+				<!-- <input type="password" class="form-control" placeholder="Password" formControlName="password"> -->
+				<input type="password" class="form-control" placeholder="Password"
+					formControlName="password" required> <span
+					class="glyphicon glyphicon-lock form-control-feedback"></span> <label
+					[ngClass]="{ 'has-error' : loginForm.controls.password.invalid && requiredFlag }"
+					*ngIf="loginForm.controls.password.invalid && requiredFlag">
+					This field is required. </label>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-4">
+					<button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+				</div>
+			</div>
+		</form>
+
+	</div>
+</div>

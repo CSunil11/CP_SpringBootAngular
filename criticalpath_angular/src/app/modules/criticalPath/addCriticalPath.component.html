@@ -1,0 +1,129 @@
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>Critical Path</h1>
+		<!-- <ol class="breadcrumb">
+			<li><a href="#" [routerLink]="['/manageCriticalPath']"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#">Examples</a></li>
+			<li class="active">Blank page</li>
+		</ol> -->
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<form  #add="ngForm" [formGroup]="addCriticalPathForm"
+			(ngSubmit)="submitCriticalPathForm(addCriticalPathForm.value)">
+			<!-- Default box -->
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">Add Critical Path</h3>
+					<i  *ngIf="showMainLoader" style="margin-left:300px;"  class="fa fa-spin fa-refresh" ></i>
+				</div>
+				<div class="box-body">
+					<div *ngIf="error && error.length > 0" class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="error=undefined">×</button>
+						{{error}}
+					</div>
+					<div *ngIf="criticalPathAdded"  class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="criticalPathAdded=false">×</button>
+						Critical Path added successfully!
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : addCriticalPathForm.controls.cycle.invalid && requiredFlag}">
+						<label>Cycle<span style="color:red;">*</span></label>
+						<select class="form-control" formControlName="cycle" readonly="readonly" (change)="onSelectCycle()" (click) = "clearCreatedBy()" required>
+                    		<option value="" selected>Select value</option>
+                    		<option [ngValue] = "cycle" *ngFor = " let cycle of listOfCycle">{{cycle.name}}</option>
+                  		</select>
+                  		<label [ngClass]="{ 'has-error' : addCriticalPathForm.controls.cycle.invalid && requiredFlag}" *ngIf="addCriticalPathForm.controls.cycle.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : addCriticalPathForm.controls.title.invalid && requiredFlag}">
+						<label>Title<span style="color:red;">*</span></label> 
+						<input type="text" class="form-control" placeholder="Enter Title" formControlName="title">
+						<label [ngClass]="{ 'has-error' : addCriticalPathForm.controls.title.invalid && requiredFlag}" *ngIf="addCriticalPathForm.controls.title.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group">
+						<label>Description</label> 
+						<textarea type="text" class="form-control" style="resize:none" rows="3" maxlength = "5000"  (keyup)="countLength()" placeholder="Enter description" formControlName="description"></textarea>
+						<small *ngIf="descriptionLength == 5000"> Note : description exceeds 5000 chars..</small>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : addCriticalPathForm.controls.length.invalid && requiredFlag || addCriticalPathForm.controls['length'].hasError('max')}">
+						<label>Length<span style="color:red;">*</span></label> 
+						<input type="number" class="form-control" placeholder="Enter Length" (keyup)="checkLength()" formControlName="length" required 
+						       min="1"  oninput="validity.valid||(value='');">
+						<!-- <label [ngClass]="{ 'has-error' : addCriticalPathForm.controls['length'].hasError('max')}" *ngIf="addCriticalPathForm.controls['length'].hasError('max')">Max Limit is {{cycleLength}} for selected Cycle</label>
+						 --><!-- <label [ngClass]="{ 'has-error' : addCriticalPathForm.controls['length'].hasError('min')}" *ngIf="addCriticalPathForm.controls['length'].hasError('max')">Select min 1 number.</label> -->       
+						<label [ngClass]="{ 'has-error' : addCriticalPathForm.controls.length.invalid && requiredFlag}" *ngIf="addCriticalPathForm.controls.length.invalid && requiredFlag">This field is required.</label>
+						<label *ngIf="taskLengthValidFlag" style="color:red;font-weight: 700;"> Note : Sum of task length and start by exceeds cycle length..</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : addCriticalPathForm.controls.startDay.invalid && requiredFlag || addCriticalPathForm.controls['startDay'].hasError('max') || addCriticalPathForm.controls['startDay'].hasError('min')}">
+						<label>Start By<span style="color:red;">*</span></label>
+						<input type="number" class="form-control" placeholder="Enter Start By" (keyup)="checkStartBy()" formControlName="startDay" required 
+						       min="1"  oninput="validity.valid||(value='');">
+						<label [ngClass]="{ 'has-error' : addCriticalPathForm.controls['startDay'].hasError('max')}" *ngIf="addCriticalPathForm.controls['startDay'].hasError('max')"> Max Limit is {{cycleLength}} for selected Cycle </label>
+						<!-- <label [ngClass]="{ 'has-error' : addCriticalPathForm.controls['startDay'].hasError('min')}" *ngIf="addCriticalPathForm.controls['startDay'].hasError('max')">Select min 1 number.</label> -->
+						  
+						<label [ngClass]="{ 'has-error' : addCriticalPathForm.controls.startDay.invalid && requiredFlag}" *ngIf="addCriticalPathForm.controls.startDay.invalid && requiredFlag">This field is required.</label>
+						<label *ngIf="startByValidFlag && !addCriticalPathForm.controls['startDay'].hasError('max')" style="color:red;font-weight: 700;" > Note : Sum of task length and start by exceeds cycle length..</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : addCriticalPathForm.controls.status.invalid && requiredFlag }">
+						<label>Status<span style="color:red;"> *</span></label>
+						<select class="form-control" formControlName="status" readonly="readonly" required>
+							<option value="" selected>Select value</option>
+                    		<option *ngFor = "let status of statusList" [ngValue] = "status">{{status.name}}</option> 
+                  		</select>
+                  		<label [ngClass]="{ 'has-error' : addCriticalPathForm.controls.status.invalid && requiredFlag }" *ngIf="addCriticalPathForm.controls.status.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group tagblock" [ngClass]="{ 'has-error' : addCriticalPathForm.controls.stores.invalid && requiredFlag}">
+						<label>Branches<span style="color:red;">*</span><span style="margin-left: 15px;"><input type="checkbox" value="" 
+									[disabled]="storeList.length === 0"	(change)="selectCheckBox($event)"></span> Select All </label>
+						<span *ngIf="showLoader" style="margin-left: 15px;">
+							<i  class="fa fa-spin fa-refresh" ></i>
+						</span>
+						<tag-input required class="form-control" formControlName="stores" theme='bootstrap3-info'  [identifyBy]="'id'" [displayBy]="'name'" 
+								[blinkIfDupe]="true"
+								[clearOnBlur]="true"
+								[onlyFromAutocomplete]="true"
+								[placeholder]="'Select Branch'" 
+								[secondaryPlaceholder] = "'Select Branch'">
+							<tag-input-dropdown [showDropdownIfEmpty]="true"
+										[focusFirstElement]="false"
+                        				[displayBy]="'name'"
+                        				[appendToBody] = "false"
+										[keepOpen]="false"
+										[identifyBy]="'id'"
+										[limitItemsTo]="'7'"
+                        				 [autocompleteItems]="storeList" theme='dark'>
+                        				  <ng-template let-item="item" let-index="index">
+                                             {{ item.name }}
+                                         </ng-template> 
+    						</tag-input-dropdown>
+    					 </tag-input> 
+    					 <label [ngClass]="{ 'has-error' : addCriticalPathForm.controls.stores.invalid && requiredFlag}" *ngIf="addCriticalPathForm.controls.stores.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="label-status">
+						<label>Activate/Deactivate</label>
+						<ui-switch size="small" formControlName="isActive" (change)="changeStatus($event)"></ui-switch>
+					</div>
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer">
+				</div>
+				<!-- /.box-footer-->
+			</div>
+			<!-- /.box -->
+			<tr>
+				<td>
+					<div class="form-group">
+						<div class="btn-group inlinebtn">
+
+							<button type="submit"  class="btn btn-success" [disabled]="!add.valid || taskLengthValidFlag ||  startByValidFlag || buttonText == CONSTANTS.SUBMITTING">{{buttonText}}</button>
+
+							<button type="button" class="btn btn-info" (click) = "back()">Back</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</form>
+	</section>
+	<!-- /.content -->
+</div>

@@ -1,0 +1,61 @@
+
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>Task Status</h1>
+		<!-- <ol class="breadcrumb">
+			<li><a href="#" [routerLink]="['/manageTaskStatus']"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#">Examples</a></li>
+			<li class="active">Blank page</li>
+		</ol> -->
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<form [formGroup]="editTaskStatusForm"
+			(ngSubmit)="submitEditedTaskStatusForm(editTaskStatusForm.value)">
+			<!-- Default box -->
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">Edit Task Status</h3>
+				</div>
+				<div class="box-body">
+					<div *ngIf="error && error.length > 0" class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="error=undefined">×</button>
+						{{error}}
+					</div>
+					<div *ngIf="taskEdited"  class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="taskEdited=false">×</button>
+						Task Status edited successfully!
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : editTaskStatusForm.controls.name.invalid && requiredFlag }">
+						<label>Name<span style="color:red;">*</span></label>
+						<input type="text" class="form-control" placeholder="Enter Name" formControlName="name" required>
+						<label [ngClass]="{ 'has-error' : editTaskStatusForm.controls.name.invalid && requiredFlag}" *ngIf="editTaskStatusForm.controls.name.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group">
+						<label>Description</label>
+						<textarea class="form-control" style="resize:none" rows="3" (keyup)="countLength()" placeholder="Enter description" formControlName="description"></textarea>
+						<small  *ngIf="descriptionLength > 5000"> Note : description exceeds 5000 chars..</small>
+					</div>
+
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer"></div>
+				<!-- /.box-footer-->
+			</div>
+			<!-- /.box -->
+			<tr>
+				<td>
+					<div class="form-group">
+						<div class="btn-group inlinebtn">
+							<button type="submit" class="btn btn-success" [disabled]="buttonText == CONSTANTS.SUBMITTING">{{buttonText}}</button>
+							<button type="button" class="btn btn-info" (click) = "back()">Back</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</form>
+	</section>
+	<!-- /.content -->
+</div>

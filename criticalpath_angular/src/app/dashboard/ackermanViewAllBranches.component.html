@@ -1,0 +1,834 @@
+<div class="acermans-page">
+  <div class="box_shadow">
+    <div class="container">
+      <nav class="top_navbar navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" [routerLink]="['/ackermanPage']"><img class="header_image" src="../../assets/images/RM_Desktop/logo.svg" alt="logo"  height="36"></a>
+        <div class="navbar" role="navigation">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+          </div>
+          <div class="navbar-collapse collapse navbar-right">
+            <ul class="nav navbar-nav">
+              <li class="active">
+                <a [routerLink]="['/ackermanPage']"> HOME </a>
+          <!-- <ul class="list-inline sdate">
+            <li class="textlable">Stock Take Date : </li>
+            <li class="pull-right">
+              <input id="completedt" onkeypress="return false;" formControlName="taskCompleteDate" [(ngModel)]="stockDt" data-provide="datepicker" class="btn-lg" placeholder="Select Date" style="color: transparent;text-shadow: 0 0 0 grey;" readonly="readonly">
+              <img class="modal_calendar_align" src="../../assets/images/RM_Desktop/calendar-date.png">
+               <label [ngClass]="{ 'has-error' : dateValidateFlag}" style="margin-left: 2px" *ngIf="dateValidateFlag">Select Valid Date.</label>
+            </li>
+          </ul>
+          <div class="form-group">
+            <ul class="list-inline start-date">
+              <li><label>When will you do the stock take?</label></li>
+              <li class="pull-right">
+                <label>
+                    <input type="radio" formControlName="newTime" id="am" name="newTime" value="1"
+                      (click)="checkForm('AM')">
+                    <span class="lbl">AM</span>
+                </label>
+                <label>
+                    <input type="radio" formControlName="newTime"
+                      id="pm" name="newTime" value="0" (click)="checkForm('PM')">
+                    <span class="lbl">PM</span>
+                </label> -->
+              </li>
+              <li>
+                <a href="javascript:void(0)" (click)="logout()"> SIGN OUT </a>
+              </li>              
+            </ul>
+          </div>
+          <!-- <div class="form-group">
+            <button class="form-control btn btn-success"  data-dismiss="modal" [disabled]="timeSelect == null || stockDt == null || dateValidateFlag"  (click)="saveStockTakeDate()">SUBMIT STOCK TAKE DATE</button>
+          </div> -->
+
+        </div>
+      </nav>
+    </div>
+  </div>
+  <!-- ---------Content------------------- -->
+  <!-- Modal -->
+  <div class="tacker_page_modal modaldesign" style="">
+    <div class="modal fade" id="addNewDate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" (click)="closeModel()"aria-label="Close">
+              <i _ngcontent-c1="" aria-hidden="true" class="fa fa-times"></i>
+            </button>
+            <h5 class="modal-title" id="">ADD NEW STOCK TAKE DATE</h5>
+            
+          </div>
+          <form #addForm="ngForm" [formGroup]="addStockTakeDateForm">
+            <div class="modal-body">
+              <div class="form-group s-branches">
+                <p class="modal_margin_right">Selected Branch/s:</p>
+                <ul class="list-inline tags" >
+                  <li *ngFor="let item of selectedStoreList"><i class="fa fa-times-circle"></i> {{item.storeName}}</li>
+                  <!-- <li><i class="fas fa-times-circle"></i> Canal Walk</li> -->
+                </ul>
+              </div>
+              <ul class="list-inline sdate">
+                <li class="textlable">Stock Take Date : </li>
+                <li class="pull-right">
+                  <input id="completedt" onkeypress="return false;" formControlName="taskCompleteDate" data-provide="datepicker" class="btn-lg" placeholder="Select Date" style="color: transparent;text-shadow: 0 0 0 grey;" readonly="readonly">
+                  <img class="modal_calendar_align" src="../../assets/images/RM_Desktop/calendar-date.png">
+                  <label [ngClass]="{ 'has-error' : dateValidateFlagForNewStockDate}" style="margin-left: 2px; text-align: center;" *ngIf="dateValidateFlagForNewStockDate">
+                    Select Valid Date.
+                  </label>
+                </li>
+              </ul>
+              <div class="form-group">
+                <ul class="list-inline start-date">
+                  <li><label>When will you do the stock take?</label></li>
+                  <li class="pull-right">
+                    <label>
+                        <input type="radio" formControlName="newTime" id="am" name="newTime" value="1"
+                          (click)="checkForm('AM')">
+                        <span class="lbl">AM</span>
+                    </label>
+                    <label>
+                        <input type="radio" formControlName="newTime"
+                          id="pm" name="newTime" value="0" (click)="checkForm('PM')">
+                        <span class="lbl">PM</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+              <div class="form-group">
+                <button class="form-control btn btn-success"  data-dismiss="modal" [disabled]="timeSelect === null || stockDt === null || dateValidateFlagForNewStockDate"  (click)="saveStockTakeDate()">SUBMIT STOCK TAKE DATE 
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cp">
+    <div class="modal fade critical_path_modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <button type="button" id="myModelClose" class="close"
+                  (click)="hidePopBox()" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <h4 class="modal-title">{{storeNameTitle}}</h4>
+                  </div>
+                  <div class="col-sm-4">
+                    <p
+                    [routerLink]="['/viewAllStockCycles', cycleViewPageId , startDateViewPage, storeViewPageId, stockDateViewPage]"
+                    data-dismiss="modal" class="viewalllink">VIEW FULL PAGE</p>
+                  </div>
+                  <div class="col-sm-2">
+                     <div *ngIf="showLoader">
+                      <i class="fa fa-spin fa-refresh"></i>&nbsp; Loading...
+                    </div>
+                    
+                  </div>
+                </div>
+                
+              
+                 
+                
+            
+            
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="rowdiv">
+              <div
+                *ngFor="let item of stockTakeCycleLength(cycleLength); let i = index;"
+                [ngClass]="{                                    
+                'bg_selected' : todayDate === cycleDateList[i],
+                'bg_green' : todayDate?.toString().substr(0,15) !== cycleDateList[i]?.toString().substr(0,15)                                                       
+              }"
+                class="smallBox">{{cycleLength-i}}</div>
+            </div>
+
+            <div class="border_in_mobile"
+              *ngFor="let criticalPathData of criticalPathList;  let i = index;">
+              <div class="description_section align_item">
+                <h5>Task {{taskSequenceNumber[i]+1}}</h5>
+                <p>{{criticalPathData.title}}</p>
+                <h3 class="hide text-center">Days to Complete</h3>
+              </div>
+              <div class="rowdiv">
+                <ng-container
+                  *ngFor="let item of stockTakeCycleLength(cycleLength); let i = index;">
+                <div
+                  [ngClass]="{                  
+                'bg_yellow' : ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && criticalPathData.status.id == 3,
+                'bg_yellow2' : todayDate?.toString().substr(0,15) === cycleDateList[i]?.toString().substr(0,15) && ((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1)) && criticalPathData.status.id == 3,
+                'bg_selected' : todayDate === cycleDateList[i],
+                'bg_grey' : i+1 !== criticalPathData.startDay                                                           
+              }"
+                  class="rowdiv smallBox ">
+                  <span
+                    *ngIf="((cycleLength-i) <= criticalPathData.startDay) && ((cycleLength-i) >= (criticalPathData.startDay - criticalPathData.length + 1))">{{cycleDateList[i]
+                    | date: 'dd/MM'}}</span>
+
+                </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+    
+  <div class="cp_page_modal stock-result">
+    <div _ngcontent-c1="" class="modal fade critical_path_modal" *ngIf="displayStatus === 'Approved by SM' || displayStatus === 'Declined by SM' || displayStatus === 'Approved by DSM' || displayStatus === 'Declined by DSM' || displayStatus === 'Approved by RAM' || displayStatus === 'Declined by RAM'" id="stockTakeResult">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i _ngcontent-c1="" aria-hidden="true" class="fa fa-times"></i>
+              </button>
+            <h5 class="modal-title" id="">New Stock take Result</h5>
+            
+          </div>
+          <div class="modal-body new-stocktakeresult-divheight">
+
+              <div class="stock-result-table table-responsive">
+                <table class="table restext" width="100%">
+                  <tr>
+                    <td width="50%">
+                      <table class="table restext">
+                        <tr>
+                          <td>Store No</td>
+                          <td>{{storeNo}}</td>
+                        </tr>
+                        <tr>
+                          <td>Store Name</td>
+                          <td class="text-green">{{storeName}}</td>
+                        </tr>
+                        <tr>
+                          <td>Analyzed By</td>
+                          <td>{{analysedBy}}</td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td width="50%">
+                      <table class="table restext">
+                        <tr>
+                          <td>Previous Count Date</td>
+                          <td>{{prevoiusCountDate | date:'dd MMM yy'}} {{prevCountDateTime}}</td>
+                        </tr>
+                        <tr>
+                          <td>Current Count Date</td>
+                          <td>{{currentCountDate | date:'dd MMM yy'}} {{currentCountDateTime}}</td>
+                        </tr>
+                        <tr>
+                          <td>Calculated Date</td>
+                          <td>{{calculatedDate | date:'dd MMM yy'}}</td>
+                        </tr>
+                        <tr>
+                          <td>Approx Months</td>
+                          <td>{{approxMonth}}</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="stock-result-table table-responsive p25">
+                <table class="table table-bordered shrinkage-calculation mb25" width="100%">
+                  <tr>
+                    <td colspan="3" class="bg-green" width="100%" align="center">Shrinkage Calculation</td>
+                  </tr>
+                  <tr>
+                    <td class="w33" align="center">Details</td>
+                    <td class="w33" align="center">Amount</td>
+                    <td class="w33" align="center">Notes</td>
+                  </tr>
+                  <tr class="bg-white">
+                    <td class="w33">Stock Count Result @ Cost</td>
+                    <td class="w33" align="right">{{stockCountResultCost}}</td>
+                    <td class="w33">{{stockCountResultCostNotes}}</td>
+                  </tr>
+
+                  <tr class="bg-white">
+                    <td class="w33">Cell Reg Stock Ajustment</td>
+                    <td class="w33" align="right">{{cellRegStockAdj}}</td>
+                    <td class="w33">{{cellRegAdjNote}}</td>
+                  </tr>
+
+                  <tr class="bg-white">
+                    <td class="w33">Total Shrinkage Ajustment</td>
+                    <td class="w33" align="right">{{totalShrinkageAdj}}</td>
+                    <td class="w33"></td>
+                  </tr>
+
+                  <tr class="bg-white">
+                    <td class="w33">Minus Swell Allowance</td>
+                    <td class="w33" align="right">{{minusSwellAllowance}}</td>
+                    <td class="w33">{{minusSwellNotes}}</td>
+                  </tr>
+                </table>
+
+
+                <table class="table shrinkage-calculation restext mb25 w66">
+                  <tr>
+                    <td class="bg-gray bright w50">Total Shrinkage after Swell Allowance</td>
+                    <td class="bg-gray w50" align="right">{{totalShrinkage}}</td>
+                  </tr>
+                </table>
+
+                <table class="table table-bordered shrinkage-calculation mb25"  width="100%">
+                  <tr class="bg-white">
+                    <td class="w33">Sales Including VAT</td>
+                    <td class="w33" align="right">{{salesIncludeVat}}</td>
+                    <td class="w33">{{salesIncNote}}</td>
+                  </tr>
+                  <tr>
+                    <td class="bg-gray bright w33">Sales Excluding VAT</td>
+                    <td class="bg-gray w33" align="right">{{salesExcludeVat}}</td>
+                    <td class="bg-white w33">{{salesExcludeVatNotes}}</td>
+                  </tr>
+                </table>
+
+                <table class="table restext shrinkage-calculation" width="100%">
+                  <tr>
+                    <td class="bg-green bright w33">Shrinkage %</td>
+                    <td class="bg-green w33" align="right">{{shrinkageper}}</td>
+                    <td class="p0 w33" align="right">
+                      <ul class="list-inline m0">
+                        <li><a href="javascript:void(0)" data-dismiss="modal" *ngIf="userLoginRole === 'ROLE_DSM_USER'"  data-toggle="modal" data-target="#declineModalDsm" class="btn btn-red-round">Decline</a></li>
+                        <li><a href="javascript:void(0)" data-dismiss="modal" *ngIf="userLoginRole === 'ROLE_RAM_USER'" data-toggle="modal" data-target="#declineModalRam" class="btn btn-red-round">Decline</a></li>
+                        <li><a href="javascript:void(0)" data-dismiss="modal" (click)="saveApproveStatus('A')" class="btn btn-green-round">Approve</a></li>
+                      </ul>
+                    </td>
+                  </tr>
+                </table>
+
+              </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="tacker_page_modal modaldesign" style="">
+    <div class="modal fade" id="declineModalDsm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" (click)="closeDsmDeclineModel()" data-dismiss="modal" aria-label="Close">
+              <i _ngcontent-c1="" aria-hidden="true" class="fa fa-times"></i>
+            </button>
+            <h5 class="modal-title" id="">STOCK TAKE RESULT DECLINED</h5>
+            
+          </div>
+          
+          <div class="modal-body">
+            <div class="form-group">
+              <textarea name="" id="" class="form-control" cols="" rows="3" [(ngModel)] = "reasonForDecline"  placeholder="Reason for Declained"></textarea>
+            </div>
+            <div class="form-group">
+              <button class="form-control btn btn-success" data-dismiss="modal" [disabled]="reasonForDecline == null" (click)="saveApproveStatus('D')">SUBMIT STOCK TAKE DATE</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tacker_page_modal modaldesign" style="">
+    <div class="modal fade" id="declineModalRam" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" (click)="closeRamDeclineModel()" data-dismiss="modal" aria-label="Close">
+              <i _ngcontent-c1="" aria-hidden="true" class="fa fa-times"></i>
+            </button>
+            <h5 class="modal-title" id="">DECLINED STOCK TAKE DATE</h5>
+            
+          </div>
+          <form #add="ngForm" [formGroup]="addDeclineformRam"> 
+            <div class="modal-body">
+              <div class="form-group reason">
+                <h6>{{dsmDate | date:'dd MMM yyyy a'}}</h6>
+                <p>{{dsmReason}}</p>
+              </div>
+              <div class="form-group reason">
+                <h6>{{smDate | date:'dd MMM yyyy a'}}</h6>
+                <p>{{smReason}}</p>
+              </div>
+              <div class="form-group">
+                <textarea id="" formControlName="ramReason" class="form-control" cols="" rows="3" placeholder="Reason for Declained"></textarea>
+              </div>
+              <h5 class="textgreen t-uppercase">Please enter new stock take date</h5>
+              <ul class="list-inline sdate">
+                <li class="textlable">Stock Take Date : </li>
+                <li class="pull-right">
+                  <input id="ramStockDate" onkeypress="return false;"  formControlName="newStockDateRam"  data-provide="datepicker" class="btn-lg" placeholder="Select Date" style="color: transparent;text-shadow: 0 0 0 grey;" readonly="readonly">
+                  <img class="modal_calendar_align" src="../../assets/images/RM_Desktop/calendar-date.png">
+                </li>
+              </ul>
+              <div class="form-group">
+                <ul class="list-inline start-date">
+                  <li><label>When will you do the stock take?</label></li>
+                  <li class="pull-right">
+                    <label>
+                        <input type="radio" formControlName="newTimeRam" id="am" name="newTimeRam" value="1" (click)="checkTimeRam('AM')">
+                        <span class="lbl">AM</span>
+                    </label>
+                    <label>
+                        <input type="radio" formControlName="newTimeRam" id="pm" name="newTimeRam" value="0"  (click)="checkTimeRam('PM')">
+                        <span class="lbl">PM</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+              <div class="form-group">
+                <button class="form-control btn btn-success" data-dismiss="modal"  (click)="saveDeclineStatusRAm()">SUBMIT STOCK TAKE DATE</button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  15 value pop up box on Approved  /Declined by click  -->
+  <!--  end model -->
+    <div class="welcome_to_cp_page">
+      <div class="container">
+        <div class="cp_page_section_padding border_bottom">
+          <h2 class="text_color">WELCOME TO THE CRITICAL PATH</h2>
+        </div>
+        <div class="cp_page_section_padding">
+          <h5 class="text_color">YOUR BRANCHES</h5>
+        </div>
+        <!-- open  when u want this is final code <div class="cp_page_section_padding ">
+          <h5 class="text_color">YOUR BRANCHES</h5>
+          <div class="row mobile_border">
+            <div class="col-sm-6 your-store-filter">                   
+                  <div class="align_item text-right custom_padding_in_mobile">
+                  <p class="grey_color margin_right">FILTER</p>
+                  <p class="grey_color margin_right">Sort&nbspBy</p>
+                  <select class="btn-lg" name="stores" [(ngModel)]="storeId"
+                  (change)="getAllStockCycles(userRole, sortBy, 1)">
+                  <option [value]="-1">All</option>
+                  <option *ngFor="let store of storeList" [value]="store.id">{{
+                  store.name }}</option>
+                  </select> <img id="toggle_dropdown_1" class="dropdown_image"
+                  src="../../assets/images/RM_Desktop/dropdown@3x.png">
+                </div>
+            </div>  
+            <div class="col-sm-6 your-store-filter">
+              <div class="align_item text-right custom_padding_in_mobile">                   
+                  <p class="grey_color margin_right">Sort&nbspBy</p>
+                  <select class="btn-lg" id="select_2" [(ngModel)]="sortBy"
+                  (change)="getAllStockCycles(userRole, sortBy, 0)">
+                  <option [value]="1">Branch</option>
+                  <option [value]="3">Stock take date</option> 
+                  </select> <img id="toggle_dropdown_2" class="dropdown_image"
+                  src="../../assets/images/RM_Desktop/dropdown@3x.png">
+                </div>
+            </div>                   
+          </div>
+        </div> -->
+        
+        <div class="mt15">
+      <!--    <h5 class="text_color">YOUR BRANCHES</h5> -->
+
+         <!-- <div class="row mobile_border">
+
+           <div class="col-sm-2 align_item bg_green">
+             <p class="grey_color in_mobile_view">FILTERS</p>
+           </div>
+           <div class="col-sm-5 align_item custom_padding_in_mobile">
+             <p class="grey_color margin_right">Select Branch</p>
+
+             <select class="btn-lg" name="stores" [(ngModel)]="storeId"
+               (change)="getAllStockCycles(userRole, sortBy, 1)">
+               <option [value]="-1">All</option>
+               <option *ngFor="let store of storeList" [value]="store.id">{{
+                 store.name }}</option>
+             </select> <img id="toggle_dropdown_1" class="dropdown_image"
+               src="../../assets/images/RM_Desktop/dropdown@3x.png">
+           </div>
+           <div
+             class="col-sm-5 align_item text-right custom_padding_in_mobile">
+
+             <p class="grey_color margin_right">Sort By</p>
+             <select class="btn-lg" id="select_2" [(ngModel)]="sortBy"
+               (change)="getAllStockCycles(userRole, sortBy, 0)">
+               <option [value]="1">Branch</option>
+                   <option [value]="3">Stock take date</option> 
+              </select> <img id="toggle_dropdown_2" class="dropdown_image"
+               src="../../assets/images/RM_Desktop/dropdown@3x.png">
+           </div>
+
+         </div>  -->
+
+       </div>
+        
+        
+        <form [formGroup]="stockCycleForm">
+          
+            <!-- <div class="loaderimg text-center" style= "margin-top: 20px;" *ngIf="showLoader">
+              <i class="fa fa-spin fa-refresh"></i>&nbsp; Loading...
+            </div> -->
+            
+
+            <div class="cp_page_section_padding pt0">
+              <div class="row">
+                <div class="col-sm-6">
+                  <span class="" *ngIf="showLoader"><i class="fa fa-spin fa-refresh"></i>&nbsp; Loading...</span>
+                </div>
+                <div class="col-sm-6">
+                  <button [ngClass]="{
+                           'disableButton' : selectedStoreList.length == 0 || addNewCycleDateValidateFlag === 1,
+                           'displayButton' : selectedStoreList.length > 0 && addNewCycleDateValidateFlag === 0
+                           }" *ngIf="userLoginRole === 'ROLE_RAM_USER'"
+                  data-toggle="modal" [disabled]="selectedStoreList.length == 0 || addNewCycleDateValidateFlag === 1" 
+                  data-target="#addNewDate" (click)="addNewStockDate()"><img
+                    src="../../assets/images/plusicon.png " /> Add new stock take date</button>
+                </div>
+              </div>
+              <label style= "margin-top: 10px; color: red;" *ngIf="addNewCycleDateValidateFlag === 1">You have selected multiple stores that have different cycle lengths / trading dates assigned to them. Please alter your selection.</label>
+              <label style= "margin-left: 40px; margin-top: 10px; color: red;" *ngIf="errorMsg !== null">{{errorMsg}}</label>
+            <div id="no-more-tables">
+              <div class="row">
+                <div class="col-sm-6">
+                  <h6 class="select-alltext">
+                    <a href="javascript:void(0)" *ngIf="userLoginRole === 'ROLE_RAM_USER'" (click)="selectAllCheckBox($event, stockList)">Select All</a>
+                  </h6>
+                </div>
+                <div class="col-sm-6"></div>
+              </div>
+            <table class="col-md-12  cf">
+              <thead class="cf">
+                <tr class="bg_greyish">
+                  <th *ngIf="userLoginRole === 'ROLE_RAM_USER'"></th>
+                  <th>Branch Code</th>
+                  <th class="hide_in_mobile">Branch</th>
+                  <th>Days till Stock Take</th>
+                  <th class="numeric" style="width: 12%;" >Stock Take Date</th>
+                  <th class="numeric">Tasks Complete</th>
+                  <th class="numeric" style="width: 9%;">Status</th>
+                  <th class="numeric" style="width: 13%;">Result Status</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody formArrayName="stockCycleArray">
+                <ng-container *ngFor="let stockCycle of stockList let i = index"
+                  [formGroupName]="i">
+                  <tr [ngClass]="{bg_red : stockCycle[1] == '0' }">
+                    <!-- For mobile start -->
+                    <td [ngClass]="{mobile_bg_red : stockCycle[1] == '0' }" class="style_for_topic visible-xs" data-title="">
+                      {{stockCycle[0]}}
+                      <div class="hide_in_desktop" style="float: right;">
+                        <ul class="list-inline">
+                          <!-- <li>
+                            <label class="custom-chk"  *ngIf="userLoginRole === 'ROLE_RAM_USER'">
+                            <input type="checkbox" value="" id="chkBx[{{i}}]"
+                            (change)="selectCheckBox($event,stockCycle[5], stockCycle[0], stockCycle[6] ,stockCycle[2])">
+                            <span class="lbl"></span></label>
+                            <a href="javascript:void(0)">
+                              <img *ngIf ="stockCycle[2] !== null && stockCycle[4] != 'Completed' && stockCycle[4] != 'Upcoming' && stockCycle[4] != 'Due' " data-toggle="modal" data-target="#myModal" (click)="setPopBox(stockCycle[5], stockCycle[0], stockCycle[6])" class="" src="../../assets/images/RM_Desktop/view-white.png">
+                            </a>
+                          </li> -->
+                          <li>
+                            <a href="javascript:void(0)" *ngIf ="stockCycle[2] !== '' && stockCycle[4] != 'Completed' && stockCycle[4] != 'Upcoming' && stockCycle[4] != 'Due' " data-toggle="modal" data-target="#myModal" (click)="setPopBox(stockCycle[5], stockCycle[0], stockCycle[6])">
+                              <img src="../../assets/images/RM_Desktop/view-white.png">
+                            </a>
+                          </li>
+                           <li>
+                            <a href="javascript:void(0)"  *ngIf="userRole === 'ROLE_RAM_USER' && stockCycle[2] !== ''"  data-title="" (click)="editStockTakeCycle(stockCycle[2],stockCycle[7],stockCycle[6],stockCycle[5])" data-toggle="modal" data-id="'stockCycle[2]'" data-target="#editStockTakeCycleModal">
+                            <img *ngIf="userRole === 'ROLE_RAM_USER' && stockCycle[2] !== ''" src="../../assets/images/RM_Desktop/edit.png">
+                            </a>
+                          </li>
+                           <li>
+                            <a href="javascript:void(0)"  *ngIf="userRole === 'ROLE_RAM_USER' && stockCycle[2] !== ''"  data-title="" (click)="delStockTakeCycle(stockCycle[2],stockCycle[7],stockCycle[6],stockCycle[5])" data-toggle="modal" data-id="'stockCycle[2]'" data-target="#delStockTakeCycleModal">
+                            <img *ngIf="userRole === 'ROLE_RAM_USER' && stockCycle[2] !== ''" src="../../assets/images/RM_Desktop/delete-white.png">
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                    <!-- For mobile end -->
+                    <td class="chkshowin-mobile" *ngIf="userLoginRole === 'ROLE_RAM_USER'"><label class="custom-chk"  *ngIf="userLoginRole === 'ROLE_RAM_USER'">
+                      <input type="checkbox" value="" id="chkBx[{{i}}]"
+                      (change)="selectCheckBox($event,stockCycle[5], stockCycle[0], stockCycle[6] ,stockCycle[2])">
+                      <span class="lbl"></span></label></td>
+                    <td data-title="Branch Code" [ngClass]="{hide_in_mobile : stockCycle[9] == ''}">{{stockCycle[9]}}</td>
+                    <!-- <td data-title="Branch" class="hide_in_mobile">{{stockCycle[0]}}</td> -->
+                    <td data-title="Branch" [ngClass]="{hide_in_mobile : stockCycle[0] == ''}">{{stockCycle[0]}}</td>
+                    <td data-title="Days till Stock Take" [ngClass]="{hide_in_mobile : stockCycle[1] == ''}">{{stockCycle[1]}}</td>
+                    <td data-title="Stock Take Date" [ngClass]="{hide_in_mobile : stockCycle[2] == ''}" style="width: 12%;">{{stockCycle[2]}} {{stockCycle[7]}}</td>
+                    <td data-title="Tasks Complete" [ngClass]="{hide_in_mobile : stockCycle[3] == ''}">{{stockCycle[3]}}</td>
+                    <td data-title="Status" [ngClass]="{hide_in_mobile : stockCycle[4] == ''}" style="width: 9%;"><span [ngClass]="{mobile_bg_yellow : stockCycle[4] == 'In Progress',
+                    mobile_bg_redish : stockCycle[4] == 'Due',
+                    mobile_bg_greyish : stockCycle[4] == 'Upcoming',
+                    bg_greenish: stockCycle[4] == 'Complete' || stockCycle[4] == 'Completed' ,
+                    hide_in_mobile : stockCycle[4] == ''}">{{stockCycle[4]}}</span></td>
+                   
+                    <td *ngIf="stockCycle[1] !=='0'" data-title="Result Status" style="width: 13%;" [ngClass]="{hide_in_mobile : stockCycle[8] == '' || stockCycle[2] === ''}" data-toggle="modal" data-target="#stockTakeResult" (click)="getStockTakeResult(stockCycle[5],stockCycle[8],stockCycle[6])">
+                      <span [ngClass]="{mobile_bg_redish : stockCycle[8] == 'Declined by SM' || 
+                            stockCycle[8] == 'Declined by RAM' || stockCycle[8] == 'Declined by DSM',
+                            mobile_bg_yellow : stockCycle[8] == 'Waiting for SM' , 
+                            hide_in_mobile : stockCycle[8] == '',
+                            bg_greenish: stockCycle[8] == 'Approved by SM' || stockCycle[8] == 'Approved by RAM' || stockCycle[8] == 'Approved by DSM'
+                            }"  *ngIf="stockCycle[2] !== ''">{{stockCycle[8]}}
+                    </span></td>
+                    
+                    <td *ngIf="stockCycle[1] ==='0'" data-title="Result Status"  [ngClass]="{hide_in_mobile : stockCycle[8] == '' && stockCycle[2] === ''}"
+                    data-toggle="modal" data-target="#stockTakeResult" (click)="getStockTakeResult(stockCycle[5],stockCycle[8],stockCycle[6])"><span [ngClass]="{mobile_red : stockCycle[8] == 'Declined by SM' || stockCycle[8] == 'Declined by RAM' || stockCycle[8] == 'Declined by DSM',
+                    mobile_yellow : stockCycle[8] == 'Waiting for SM' , 
+                    hide_in_mobile : stockCycle[8] == '',
+                    mobile_green: stockCycle[8] == 'Approved by SM' || stockCycle[8] == 'Approved by RAM' || stockCycle[8] == 'Approved by DSM' 
+                    }"  *ngIf="stockCycle[2] !== ''">{{stockCycle[8]}}</span></td>
+                    <td></td>
+                    <!-- <td  *ngIf = "stockCycle[2] !== ''"  data-title="" class="numeric" ><i *ngIf ="stockCycle[2] !== null && stockCycle[4] != 'Completed' && stockCycle[4] != 'Upcoming' && stockCycle[4] != 'Due' " class="fa fa-eye" data-toggle="modal" data-target="#myModal" (click)="setPopBox(stockCycle[5], stockCycle[0], stockCycle[6])"></i></td> -->
+
+                    <td *ngIf = "stockCycle[2] !== ''" data-title="" class="chkshowin-mobile" class="numeric">
+                      <span>
+                        <a href="javascript:void(0)">
+                         <img *ngIf ="stockCycle[1] !== '0' && (stockCycle[2] !== null && stockCycle[4] != 'Completed' && stockCycle[4] != 'Upcoming' && stockCycle[4] != 'Due') " data-toggle="modal" data-target="#myModal" (click)="setPopBox(stockCycle[5], stockCycle[0], stockCycle[6])" class="hide_in_mobile" src="../../assets/images/RM_Desktop/view-grey.png">
+                         <img *ngIf ="stockCycle[1] === '0' && (stockCycle[2] !== null && stockCycle[4] != 'Completed' && stockCycle[4] != 'Upcoming' && stockCycle[4] != 'Due') " data-toggle="modal" data-target="#myModal" (click)="setPopBox(stockCycle[5], stockCycle[0], stockCycle[6])" class="hide_in_mobile" src="../../assets/images/RM_Desktop/view-white.png">
+                        </a>
+                      </span>
+                    </td>
+
+         			<!--   <td *ngIf = "stockCycle[2] == ''"></td> -->
+                    <td *ngIf="userRole === 'ROLE_RAM_USER' && stockCycle[2] !== ''"  data-title="" (click)="editStockTakeCycle(stockCycle[2],stockCycle[7],stockCycle[6],stockCycle[5])" data-toggle="modal" data-id="'stockCycle[2]'" data-target="#editStockTakeCycleModal" class="numeric"><a href="javascript:void(0)">
+                    	<img *ngIf="stockCycle[1] !== '0'" class="hide_in_mobile" src="../../assets/images/RM_Desktop/edit.png">
+                    	<img *ngIf="stockCycle[1] === '0'" class="hide_in_mobile" src="../../assets/images/RM_Desktop/edit.png"></a> 
+                    	<!-- <i *ngIf="stockCycle[1] !== '0'"  class="fa fa-pencil-square-o hide_in_mobile" aria-hidden="true"></i></a> -->
+                    </td>
+                    <td *ngIf="!(userRole === 'ROLE_RAM_USER' && stockCycle[2] !== '')"></td>
+
+                    <td *ngIf = "stockCycle[2] == ''"></td>
+                    <td *ngIf="userRole === 'ROLE_RAM_USER' && stockCycle[2] !== ''"  data-title="" (click)="delStockTakeCycle(stockCycle[2],stockCycle[7],stockCycle[6],stockCycle[5])" data-toggle="modal" data-id="'stockCycle[2]'" data-target="#delStockTakeCycleModal" class="numeric"><a href="javascript:void(0)"><img *ngIf="stockCycle[1] === '0'" class="hide_in_mobile" src="../../assets/images/RM_Desktop/delete-white.png"><img *ngIf="stockCycle[1] !== '0'" class="hide_in_mobile" src="../../assets/images/RM_Desktop/delete-grey.png"></a></td>
+                    <td *ngIf="!(userRole === 'ROLE_RAM_USER' && stockCycle[2] !== '')"></td>
+                    
+                  </tr>
+                </ng-container>
+              </tbody>
+              <!-- <tbody formArrayName="stockCycleArray">
+                <ng-container *ngFor="let stockCycle of stockList let i = index"
+                  [formGroupName]="i">
+                  <tr [ngClass]="{red : stockCycle[1] == '0' }">
+                    <td *ngIf="userLoginRole === 'ROLE_RAM_USER'"><label class="custom-chk"  *ngIf="userLoginRole === 'ROLE_RAM_USER'">
+                      <input type="checkbox" value="" id="chkBx[{{i}}]"
+                      (change)="selectCheckBox($event,stockCycle[5], stockCycle[0], stockCycle[6] ,stockCycle[2])">
+                      <span class="lbl"></span></label></td>
+                    <td>{{stockCycle[9]}}</td>
+                    <td>{{stockCycle[0]}}</td>
+                    <td>{{stockCycle[1]}}</td>
+                    <td>{{stockCycle[2] | date: 'd MMM y'}}</td>
+                    <td>{{stockCycle[3]}}</td>
+                    <td
+                    [ngClass]="{inProgressCol : stockCycle[4] == 'In Progress',
+                    dueCol : stockCycle[4] == 'Due',
+                    upComingCol : stockCycle[4] == 'Upcoming',
+                    completeCol: stockCycle[4] == 'Complete' || stockCycle[4] == 'Completed'}"><span>{{stockCycle[4]}}</span></td>
+                    <td  [ngClass]="{dueCol : stockCycle[8] == 'Declined by SM' || stockCycle[8] == 'Declined by RAM' || stockCycle[8] == 'Declined by DSM',
+                    upComingCol : stockCycle[8] == 'Waiting for SM',
+                    completeCol: stockCycle[8] == 'Approved by SM' || stockCycle[8] == 'Approved by RAM' || stockCycle[8] == 'Approved by DSM'}" 
+                    data-toggle="modal" data-target="#stockTakeResult" (click)="getStockTakeResult(stockCycle[5],stockCycle[8],stockCycle[6])"><span *ngIf="stockCycle[2] !== ''">{{stockCycle[8]}}</span></td>
+                    <td></td>
+                    <td  *ngIf = "stockCycle[2] !== ''"  data-title="" class="numeric" ><i *ngIf ="stockCycle[2] !== null && stockCycle[4] != 'Completed' && stockCycle[4] != 'Upcoming' && stockCycle[4] != 'Due' " class="fa fa-eye" data-toggle="modal" data-target="#myModal" (click)="setPopBox(stockCycle[5], stockCycle[0], stockCycle[6])"></i></td>
+                    <td *ngIf = "stockCycle[2] == ''"></td>
+                    <td *ngIf="userRole === 'ROLE_RAM_USER' && stockCycle[2] !== ''"  data-title="" (click)="storeDate(stockCycle[2],stockCycle[7],stockCycle[6],stockCycle[5])" data-toggle="modal" data-id="'stockCycle[2]'" data-target="#modal-default" class="numeric"><a href="javascript:void(0)"><img class="hide_in_mobile" src="../../assets/images/RM_Desktop/delete-grey.png"></a></td>
+                    <td *ngIf="!(userRole === 'ROLE_RAM_USER' && stockCycle[2] !== '')"></td>
+                  </tr>
+                </ng-container>
+              </tbody> -->
+             </table>
+           </div>
+           </div>
+        </form>
+        <br> <br> <br> <br> <br>
+      </div>
+    </div>
+    <br> <br> <br> <br>
+    <!-- ----------------End Content----------------------------- -->
+    <div id="footer" class="footer">
+      <div class="container">
+        <p>ALL RIGHTS RESERVED 2013 - 2019</p>
+      </div>
+    </div>
+    
+    <div class="tacker_page_modal modaldesign">
+      <div class="modal fade"  id="editStockTakeCycleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document" >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeEditModel()">
+              <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+            </button>
+            <h5 class="modal-title" id="exampleModalLabel"><b>UPADTE STOCK TAKE </b></h5>
+            
+          </div>
+
+          <form #add="ngForm" [formGroup]="editStockTakeDateForm"> 
+            <div class="modal-body" > 
+              <div class="calender_align">
+               <!--  <p class="modal_margin_right">When will you do the stock take?</p> -->
+                
+                <div class="form-group">
+                  <ul class="list-inline start-date">
+                    <li><label>When will you do the stock take?</label></li>
+                    <li class="pull-right">
+                      <label>
+                          <input class="magic-radio" type="radio" formControlName="newTimeForEdit" id="am"  name ="newTimeForEdit"  value="1" 
+                          (click)="validTimeForEditOperation('AM')">
+                          <span class="lbl">AM</span>
+                      </label>
+                      <label>
+                          <input class="magic-radio" type="radio" formControlName="newTimeForEdit"  id="pm" name ="newTimeForEdit" value="0" 
+                          (click)="validTimeForEditOperation('PM')">
+                          <span class="lbl">PM</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </div><br/>          
+              <div  class="content_padding text-center" data-dismiss="modal">
+                <button class=" btn btn-lg btn-block btn-success" [disabled]="!isEditTimeDirty" (click) = "saveEditedForm()">UPDATE STOCK TAKE DATE</button>            
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+    <div class="tacker_page_modal modaldesign">
+      <div class="modal fade"  id="delStockTakeCycleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document" >
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeDelModel()">
+              <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+            </button>
+            <h5 class="modal-title" id="exampleModalLabel"><b>DELETE STOCK TAKE ?</b></h5>
+            
+          </div>
+
+          <form #add="ngForm" [formGroup]="deleteStockTakeDateForm"> 
+            <div class="modal-body" >
+              <h5 class="textgreen">PLEASE ENTER NEW STOCK TAKE DATE</h5>
+              <div class="calender_align">
+                <p class="modal_margin_right">Stock Take Date:</p>
+                <input id="deleteStockDate" formControlName="newStockDate"  data-provide="datepicker"  name ="newStockDate" class="btn-lg" placeholder="Select Date" style="color: transparent;text-shadow: 0 0 0 grey;" readonly="readonly">  
+                <img class="modal_calendar_align" src="../../assets/images/RM_Desktop/calendar-date.png"><br>
+
+              </div>
+              <!-- <div class="input-group date">
+              <input type="text"  class="form-control pull-right" id="deleteStockDate" formControlName="newStockDate" readonly="readonly" required>
+                        <div class="input-group-addon">
+                          <i class="fa fa-calendar"></i>
+                        </div>
+              </div> -->
+              <span [ngClass]="{ 'has-error' : dateValidateFlag}" *ngIf="dateValidateFlag" style="text-align: center;margin-top: -10px;">Select Valid Date.</span>
+              <!-- <label [ngClass]="{ 'has-error' : dateValidateFlag}" style="margin-left: 270px;margin-top: -25px;margin-bottom: 15px;" *ngIf="dateValidateFlag">Select Valid Date.</label> -->
+              <div class="calender_align">
+               <!--  <p class="modal_margin_right">When will you do the stock take?</p> -->
+                
+                <div class="form-group">
+                  <ul class="list-inline start-date">
+                    <li><label>When will you do the stock take?</label></li>
+                    <li class="pull-right">
+                      <label>
+                          <input class="magic-radio" type="radio" formControlName="newTimeForDel" id="am"  name ="newTimeForDel"  value="1" 
+                          (click)="validTImeForDelOperation('AM')">
+                          <span class="lbl">AM</span>
+                      </label>
+                      <label>
+                          <input class="magic-radio" type="radio" formControlName="newTimeForDel"  id="pm" name ="newTimeForDel" value="0" 
+                          (click)="validTImeForDelOperation('PM')">
+                          <span class="lbl">PM</span>
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- <div class="radio">
+                  <label><input class="magic-radio" type="radio" formControlName="newTime" id="am"  name ="newTime"  value="1" (click)="checkDeleteForm('AM')">AM</label>&nbsp;
+                  <label><input class="magic-radio" type="radio" formControlName="newTime"  id="pm" name ="newTime" value="0" (click)="checkDeleteForm('PM')">PM</label>
+                </div> -->
+              </div><br/>          
+              <div  class="content_padding text-center" data-dismiss="modal">
+                <button class=" btn btn-lg btn-block btn-success" [disabled]="!add.valid || dateValidateFlag" (click) = "saveDeletedForm()">SUBMIT STOCK TAKE DATE</button>            
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="modal fade" id="modal-default">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <i _ngcontent-c1="" aria-hidden="true" class="fa fa-times"></i>
+        </button>
+        <h3 class="modal-title">Cycle</h3>
+      </div>
+      <div class="modal-body">
+        <h4>
+          <p>Are you sure you want to delete the record?</p>
+        </h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-right"
+          data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+          (click)="hideCycle()">Yes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  <!-- </div> -->
+  <!-- /.modal-dialog -->
+<!-- </div> -->
+<!-- /.modal -->
+<style type="text/css">
+/*.red {
+  color: red;
+}
+
+.inProgressCol {
+  color: #cb7600;
+}
+
+.dueCol {
+  color: red;
+}
+
+.upComingCol {
+  color: grey;
+}
+
+.completeCol {
+  color: #019441;
+}*/
+
+
+</style>
+

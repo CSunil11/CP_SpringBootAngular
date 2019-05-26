@@ -1,0 +1,15 @@
+
+.dashBoardbtn{
+	display: inline-block;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 0px 20px;
+    background: #269abc;
+    font-size: 18px;
+    -webkit-transition: 0.2s all;
+    transition: 0.2s all;
+}
+
+

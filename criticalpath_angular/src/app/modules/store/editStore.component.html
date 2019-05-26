@@ -1,0 +1,106 @@
+
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>Branch</h1>
+		<!-- <ol class="breadcrumb">
+			<li><a href="#" [routerLink]="['/manageStore']"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#">Examples</a></li>
+			<li class="active">Blank page</li>
+		</ol> -->
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<form #add="ngForm" [formGroup]="editStoreForm"
+			(ngSubmit)="submitEditedStoreForm(editStoreForm.value)">
+			<!-- Default box -->
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">Edit Branch</h3>
+				</div>
+				<div class="box-body">
+					<div *ngIf="error && error.length > 0" class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="error=undefined">×</button>
+						{{error}}
+					</div>
+					<div *ngIf="editedStore" class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="editedStore=false">×</button>
+						Branch edited successfully !
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : (editStoreForm.controls.code.invalid && requiredFlag)}">
+						<label>Code<span style="color:red;"> *</span></label> 
+						<input type="text" class="form-control" placeholder="Enter Code" formControlName="code" required>
+						<!-- <label [ngClass]="{ 'has-error' : editStoreForm.controls['code'].hasError('pattern')}" *ngIf="editStoreForm.controls['code'].hasError('pattern')">Only alphabetical characters allowed.</label><br> -->
+						<label [ngClass]="{ 'has-error' : editStoreForm.controls.code.invalid && requiredFlag }" *ngIf="editStoreForm.controls.code.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : (editStoreForm.controls.name.invalid && requiredFlag) }">
+						<label>Name<span style="color:red;"> *</span></label> 
+						<input type="text" class="form-control" placeholder="Enter Name" formControlName="name" >
+						<label [ngClass]="{ 'has-error' : editStoreForm.controls.name.invalid && requiredFlag }" *ngIf="editStoreForm.controls.name.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : editStoreForm.controls.brand.invalid && requiredFlag }">
+						<label>Company<span style="color:red;"> *</span></label>
+						<select class="form-control" formControlName="brand" readonly="readonly" required>
+                    		<option *ngFor = "let brand of brandList" [ngValue] = "brand">{{brand.name}}</option> 
+                  		</select>
+                  		<label [ngClass]="{ 'has-error' : editStoreForm.controls.brand.invalid && requiredFlag }" *ngIf="editStoreForm.controls.brand.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : editStoreForm.controls.country.invalid && requiredFlag }">
+						<label>Country<span style="color:red;"> *</span></label>
+						<!-- <select class="form-control" formControlName="country" readonly="readonly" (change)="getProvince()" required>
+                    		<option *ngFor = "let country of countryList"  selected = "{{country.name == countryName}}" [ngValue] = "country">{{country.name}}</option> 
+                  		</select> -->
+                  		<select class="form-control" formControlName="country" readonly="readonly" (change)="getProvince()" required>
+                  			
+                    		<option *ngFor = "let country of countryList" [ngValue] = "country">{{country.name}}</option> 
+                  		</select>
+                  		<label [ngClass]="{ 'has-error' : editStoreForm.controls.country.invalid && requiredFlag }" *ngIf="editStoreForm.controls.country.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : editStoreForm.controls.province.invalid && requiredFlag }">
+						<label>Province<span style="color:red;"> *</span></label>
+						
+						<select class="form-control" formControlName="province" readonly="readonly" (change)="getLocationDivision()" required>
+                    		<option *ngFor = "let province of provinceList" [ngValue] = "province">{{province.name}}</option> 
+                  		</select>
+                  		<label [ngClass]="{ 'has-error' : editStoreForm.controls.province.invalid && requiredFlag }" *ngIf="editStoreForm.controls.province.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : editStoreForm.controls.locationDivision.invalid && requiredFlag }">
+						<label>Location Division<span style="color:red;"> *</span></label>
+						
+						<select class="form-control" formControlName="locationDivision" (change)="removeUser()"readonly="readonly" required>
+                    		<option *ngFor = "let locDiv of locDivList" [ngValue] = "locDiv">{{locDiv.name}}</option> 
+                  		</select>
+                  		<label [ngClass]="{ 'has-error' : editStoreForm.controls.locationDivision.invalid && requiredFlag }" *ngIf="editStoreForm.controls.locationDivision.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : editStoreForm.controls.regionalManagers.invalid && requiredFlag }">
+						<label>RAM User<span style="color:red;"> *</span></label>
+						<select class="form-control" formControlName="regionalManagers" readonly="readonly" required>
+                    		<option *ngFor = "let ramUser of RAMUserList" [ngValue] = "ramUser">{{ramUser.name}}</option> 
+                  		</select>
+                  		<label [ngClass]="{ 'has-error' : editStoreForm.controls.regionalManagers.invalid && requiredFlag }" *ngIf="editStoreForm.controls.regionalManagers.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="label-status">
+						<label>Activate/Deactivate</label>
+						<ui-switch size="small" formControlName="isActive" (change)="changeStatus($event)"></ui-switch>
+					</div>
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer"></div>
+				<!-- /.box-footer-->
+			</div>
+			<!-- /.box -->
+			<tr>
+				<td>
+					<div class="form-group">
+						<div class="btn-group inlinebtn">
+							<button type="submit" class="btn btn-success" [disabled]="buttonText == CONSTANTS.SUBMITTING">{{buttonText}}</button>
+							<button type="button" class="btn btn-info" (click) = "back()">Back</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</form>
+	</section>
+	<!-- /.content -->
+</div>

@@ -1,0 +1,108 @@
+<html lang="en">
+  <head>
+  	<title>Ackermans</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  </head>
+
+<div class="acermans-page">
+<div class="box_shadow">
+    <div class="container">
+   <nav class="top_navbar navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" ><img class="header_image" src="../../assets/images/RM_Desktop/logo.svg" alt="logo" height="36"></a>
+
+      <div class="navbar" role="navigation">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+          </div>
+          <div class="navbar-collapse collapse navbar-right">
+            <ul class="nav navbar-nav">
+              <li>
+                <a href="javascript:void(0)" (click)="logout()"> SIGN OUT </a>
+              </li>              
+            </ul>
+          </div>
+        </div>
+  </nav>
+</div>
+</div>
+
+
+
+<div class="critical_path_page">
+	<div class="container fullpageheight">
+		<!-- <div class="row"> -->
+		<!-- 	<div class="col-md-6 col-sm-12 bg_color pageHeight">
+				<div class="content">
+					<h2 class="color_white">WELCOME TO THE CRITICAL PATH</h2>
+					<p class="color_white div_padding">To continue, please begin by entering the date on which you would like to do your stock take. Remembering that this will create a series of tasks that will assist you in preparing for the stock take date. You will be required to complete these tasks, in the 14 days leading up to your stock take date.</p>
+				</div>
+			</div> -->
+			<div class="col-sm-12">
+				<div>
+				<h1 class="text-center">NO CYCLE AVAILABLE FOR NOW.
+				<br/>
+				<span style="font-size: x-large;" *ngIf="dateStart !== '' && dateStart !== null && dateStart !== 'undefined'">There is upcoming cycle which starts on {{dateStart}}</span></h1>
+				
+			<!-- 	<form #add="ngForm" [formGroup]="addStockTakeDateForm"> 
+					<h5>BRANCH NAME : {{storeName}}</h5>
+					<div class="calender_align content_padding w100">
+						<p class="mr-sm-5 margin_bottom">Stock Take Date:</p>
+			            <input id="dt" onkeypress="return false;" formControlName="stokeDate"  name ="stokeDate" [(ngModel)] = "stokeDate" data-provide="datepicker" class="btn-lg" placeholder="Select Date" style="color: transparent;text-shadow: 0 0 0 grey;" readonly="readonly">
+			            <img src="../../assets/images/RM_Desktop/calendar-date.png">
+			
+			              <div class="inline">
+			                  <div class="show_in_mobile">
+			                    <input onkeypress="return false;" data-provide="datepicker" type="text" class="btn-lg day" placeholder="Day" style="color: transparent;text-shadow: 0 0 0 grey;" readonly="readonly">
+			                    <img src="../../assets/images/RM_Desktop/dropdown.png">
+			                  </div>
+			                  <div class="show_in_mobile">
+			
+			                    <input onkeypress="return false;" data-provide="datepicker" type="text" class="btn-lg month" placeholder="Month" style="color: transparent;text-shadow: 0 0 0 grey;" readonly="readonly">
+			                    <img src="../../assets/images/RM_Desktop/dropdown.png">
+			                  </div>
+			                  <div class="show_in_mobile">
+			                      <input onkeypress="return false;" data-provide="datepicker" type="text" class="btn-lg year" placeholder="Year" style="color: transparent;text-shadow: 0 0 0 grey;" readonly="readonly">
+			
+			                    <img src="../../assets/images/RM_Desktop/dropdown.png">
+			                  </div>
+			              </div>
+					</div>
+			          <div class="calender_align align_in_mobile w100">
+			            <p class="mr-sm-5 margin_right" >Start Date:</p>
+			            <input class="btn-lg no_border " id="start" formControlName="startdate"  name ="startdate" [(ngModel)] = "startdate" type="text" style="color: transparent;text-shadow: 0 0 0 grey;" readonly="readonly"  >
+			          </div>
+          
+          
+            <div class="calender_align align_in_mobile w100">
+		            <p class="mr-sm-5 margin_right">When will you do the stock take?</p>
+		            <select class="btn-lg" [(ngModel)] = "time" formControlName="time">
+		              <option value="AM" >AM</option>
+		              <option value="PM" >PM</option>
+		            </select>
+		            <img id="toggle_dropdown_1" class="dropdown_image" src="../../assets/images/RM_Desktop/dropdown@3x.png">
+		            <select class="btn-lg ng-pristine ng-valid ng-touched" [(ngModel)] = "time" formControlName="time" width= "100px">
+		              <option value="AM" >    AM    </option>
+		              <option value="PM" >    PM    </option>
+		            </select>
+		            <img id="toggle_dropdown_1" class="dropdown_image" src="../../assets/images/RM_Desktop/dropdown@3x.png" >
+          	</div>
+          <div class="content_padding text-center">
+            <button class="form-control btn btn-success" [disabled]="cycleStartDate == null || buttonText == 'SUBMITTING...'"  (click)="saveStokeTakeDate()" > {{buttonText}} </button>
+          </div>
+          </form> -->
+				</div>
+			</div>
+	<!-- 	</div> -->
+	</div>
+
+</div>
+<!-- <input class="btn-lg" type="text" id="yoyo" data-format="DD-MM-YYYY" data-template="D MMM YYYY" name="date" value="09-01-2013"> -->
+<div id="footer" class="footer">
+	<div class="container">
+		<p>ALL RIGHTS RESERVED 2013 - 2019</p>
+	</div>
+</div>
+</div>
+</html>

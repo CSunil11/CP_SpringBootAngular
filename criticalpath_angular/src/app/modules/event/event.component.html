@@ -1,0 +1,167 @@
+ <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Event
+      </h1>
+       <br/>
+      <!-- <tr><br><br><br>
+		 <td>
+         	<button type="button" class="btn btn-block btn-success" (click) = "addNewEvent()">Add New</button>
+         </td>
+      </tr> -->
+      <div class="row" *ngIf="(uploadLogs?.length == 0 || !uploadLogs)">
+			<div *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'"  class="col-sm-6 btn-group inlinebtn">
+				<button type="button" class="btn btn-success"
+					(click)="addNewEvent()">Add New</button>
+				<div class="btn btn-default btn-file">
+					<i class="fa fa-paperclip"></i> Select File to Upload <input
+						type="file" #fileInput (click)="fileInput.value = null"
+						accept=".csv" (change)="upload($event)">
+				</div>
+			</div>
+			<div class="col-sm-6"></div>
+		</div>
+		<div *ngIf="typeError" class="alert alert-danger alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-hidden="true" (click)="typeError=undefined">×</button>
+			Only .CSV file is allowed
+		</div>
+		<div *ngIf="invalid" class="alert alert-danger alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-hidden="true" (click)="invalid=undefined">×</button>
+			Invalid .CSV file
+		</div>
+		<div *ngIf="uploadedSuccess"
+			class="alert alert-success alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-hidden="true" (click)="uploadedSuccess=undefined">×</button>
+			Data Uploaded successfully
+		</div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-header" *ngIf="(uploadLogs?.length == 0 || !uploadLogs)">
+         <!--  <h3 class="box-title">List of Event</h3> -->
+          <div class="row">
+					<div class="col-sm-4">
+						<h3 class="box-title">List of Event</h3>
+					</div>
+					<div class ="col-sm-4 loaderadmin text-center">
+						<div *ngIf="showLoader">
+						<i  class="fa fa-spin fa-refresh" ></i>&nbsp; Loading...
+						</div>
+	  				</div> 
+					<div class="col-sm-4 text-right">
+						<div class="checkbox" style="margin: 0;">
+							<label>
+				    			<input
+				  				 type="checkbox"
+				  				 name="showrecord"
+				 				 [checked]="showDeleteRecord"
+				 				 (change)="ShowDeleteRecord()"/>Show Deleted/Inactive Records
+							</label> 
+						</div>
+					</div>  
+			</div>
+        </div>
+        <div class="box-body" *ngIf="(uploadLogs?.length == 0 || !uploadLogs)">
+       	<div *ngIf="deleted" class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="delete=undefined">×</button>
+						Event Deleted Successfully!
+		</div>
+		<div *ngIf="restored" class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="restored=undefined">×</button>
+						Event Restored Successfully!
+		</div>
+         <table id="eventTable" class="table table-bordered table-striped">
+                <thead>
+	                <tr>
+	                  <th>Name</th>
+	                  <th>Description</th>
+	                  <th *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'">Action</th>
+	                </tr>
+                </thead>
+                <tbody>
+                	 <tr *ngFor="let eventData of eventList">
+                     	<td>{{eventData.name}}</td>
+                     	<td>{{eventData.description}}</td>
+                     	<td *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'" class="table-btn-colwidth"> 
+                     		<div class="btn-group inlinebtn">
+		              			<button *ngIf = "!eventData.isDelete" class="btn btn-xs btn-info" [routerLink]="['/manageEvent/editEvent', eventData.id]">
+		                			<i class="fa fa-edit"></i> Edit
+		              			</button>
+		              			<button *ngIf = "!eventData.isDelete" class="btn btn-xs btn-danger"
+										data-toggle="modal"
+										data-target="#modal-default" data-id="'eventData.id'"
+										(click)="getId(eventData.id)">
+										<i class="fa fa-trash"></i> Delete
+								</button>
+								<button *ngIf = "eventData.isDelete" class="btn btn-xs btn-success" (click) = "restoreEvent(eventData.id)">
+		                			<i class="fa fa-file"></i> Restore
+		              			</button>
+	              			</div>
+              			</td>
+                     </tr>
+                </tbody>
+         </table>
+                
+        </div>
+        <div class="box-body " *ngIf="uploadLogs?.length > 0">
+				<div class="scroll" *ngIf="!uploadedSuccess">
+					<h3 class="errorlogs">{{uploadLogs?.length}} Error Encountered</h3>
+					<div *ngFor="let logs of uploadLogs; let i = index">
+						<h5 class="errorlogs">{{i+1}}) {{logs}}</h5>
+					</div>
+					<br>
+				</div>
+				<br>
+				<div>
+					<div>
+						<button type="button" class="btn btn-info"
+							(click)="redirectToListPage()">OK</button>
+					</div>
+				</div>
+		</div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+        </div>
+        <!-- /.box-footer-->
+      </div>
+      <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  <div class="modal fade" id="modal-default">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h3 class="modal-title">Store</h3>
+			</div>
+			<div class="modal-body">
+				<h4>
+					<p>Are you sure you want to delete the record?</p>
+				</h4>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-right"
+					data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+					(click)="deleteEvent()">Yes</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

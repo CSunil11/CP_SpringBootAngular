@@ -1,0 +1,106 @@
+
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>Location Division</h1>
+		<!-- <ol class="breadcrumb">
+			<li><a href="#" [routerLink]="['/manageCountry']"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#">Examples</a></li>
+			<li class="active">Blank page</li>
+		</ol> -->
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<form [formGroup]="addLocationDivisionForm"
+			(ngSubmit)="submitLocationDivisionForm(addLocationDivisionForm.value)">
+			<!-- Default box -->
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">Add Location Division</h3>
+				</div>
+				<div class="box-body">
+					<div *ngIf="error && error.length > 0" class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="error=undefined">×</button>
+						{{error}}
+					</div>
+					<div *ngIf="locationDivisionAdded"  class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="locationDivisionAdded=false">×</button>
+						Location Division added successfully!
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : addLocationDivisionForm.controls.name.invalid && requiredFlag}">
+						<label>Name<span style="color:red;">*</span></label> 
+						<input type="text" class="form-control" placeholder="Enter Name" formControlName="name" required>
+						<label [ngClass]="{ 'has-error' : addLocationDivisionForm.controls.name.invalid &&
+															  requiredFlag}" *ngIf="addLocationDivisionForm.controls.name.invalid && requiredFlag ">This field is required.</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : addLocationDivisionForm.controls.country.invalid && requiredFlag }">
+						<label>Country<span style="color:red;"> *</span></label>
+						<select class="form-control" formControlName="country" readonly="readonly" (change)="getProvince()" required>
+                    		<option *ngFor = "let country of countryList" [ngValue] = "country">{{country.name}}</option> 
+                  		</select>
+                  		<label [ngClass]="{ 'has-error' : addLocationDivisionForm.controls.country.invalid && requiredFlag }" *ngIf="addLocationDivisionForm.controls.country.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : addLocationDivisionForm.controls.province.invalid && requiredFlag }">
+						<label>Province<span style="color:red;"> *</span></label>
+						<select class="form-control" formControlName="province" readonly="readonly" required>
+                    		<option value="">Select Province</option>
+                    		<option *ngFor = "let province of provinceList" [ngValue] = "province">{{province.name}}</option> 
+                  		</select>
+                  		<label [ngClass]="{ 'has-error' : addLocationDivisionForm.controls.province.invalid && requiredFlag }" *ngIf="addLocationDivisionForm.controls.province.invalid && requiredFlag">This field is required.</label>
+					</div>
+					 <div class="form-group" [ngClass]="{ 'has-error' : addLocationDivisionForm.controls.DSMUser.invalid && requiredFlag}">
+						<label>DSM User<span style="color:red;">*</span></label><br/>
+						<div style="display:inline-block;width: 200px;" *ngIf="DSMUserList.length > 0"> <!-- *ngIf="DSMUserList.length > 0" -->
+							<ng-select [items]="DSMUserList"
+								formControlName="DSMUser"
+								[disabled]="disabled" 	
+								 placeholder="Select DSM User" >
+							</ng-select>	
+							<label [ngClass]="{ 'has-error' : addLocationDivisionForm.controls.DSMUser.invalid &&
+															  requiredFlag}" *ngIf="addLocationDivisionForm.controls.DSMUser.invalid && requiredFlag ">This field is required.</label>							
+						</div>
+						<div *ngIf="DSMUserList.length == 0">
+							No DSM users available. Please add new DSM users.
+						</div> 
+					</div>   
+					<!--  <div class="form-group"  [ngClass]="{ 'has-error' : addLocationDivisionForm.controls.RAMUser.invalid && requiredFlag}">
+						<label>RAM User<span style="color:red;">*</span></label><br/>
+						<div style="display:inline-block;width: 200px;" *ngIf="RAMUserList.length > 0">
+							<ng-select [items]="RAMUserList"
+								formControlName="RAMUser"
+								[disabled]="disabled" 	
+								 placeholder="Select RAM User" >
+							</ng-select>	
+							<label [ngClass]="{ 'has-error' : addLocationDivisionForm.controls.RAMUser.invalid &&
+															  requiredFlag}" *ngIf="addLocationDivisionForm.controls.RAMUser.invalid && requiredFlag ">This field is required.</label>						
+						</div>
+						<div *ngIf="RAMUserList.length == 0">
+							No RAM users available. Please add new RAM users.
+						</div>
+					</div>    -->
+					<div class="label-status">
+						<label>Activate/Deactivate</label>
+						<ui-switch size="small" formControlName="isActive" (change)="changeStatus($event)"></ui-switch>
+					</div>
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer">
+				</div>
+				<!-- /.box-footer-->
+			</div>
+			<!-- /.box -->
+			<tr>
+				<td>
+					<div class="form-group">
+						<div class="btn-group inlinebtn">
+							<button type="submit" class="btn btn-success" [disabled]="buttonText == CONSTANTS.SUBMITTING">{{buttonText}}</button>
+							<button type="button" class="btn btn-info" (click) = "back()">Back</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</form>
+	</section>
+	<!-- /.content -->
+</div>

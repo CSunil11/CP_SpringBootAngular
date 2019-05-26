@@ -1,0 +1,66 @@
+
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>Events</h1>
+		<!-- <ol class="breadcrumb">
+			<li><a href="#" [routerLink]="['/manageEvent']"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#">Examples</a></li>
+			<li class="active">Blank page</li>
+		</ol> -->
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<form [formGroup]="addEventForm"
+			(ngSubmit)="submitEventForm(addEventForm.value)">
+			<!-- Default box -->
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">Add Event</h3>
+				</div>
+				<div class="box-body">
+					<div *ngIf="error && error.length > 0" class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="error=undefined">×</button>
+						{{error}}
+					</div>
+					<div *ngIf="eventAdded"  class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="eventAdded=false">×</button>
+						Event added successfully!
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : (addEventForm.controls.name.invalid && requiredFlag) || addEventForm.controls['name'].hasError('minlength')}">
+						<label>Name<span style="color:red;">*</span></label> 
+						<input type="text" class="form-control" placeholder="Enter Name" formControlName="name" minlength = "3">
+						<label [ngClass]="{ 'has-error' : addEventForm.controls['name'].hasError('minlength')}" *ngIf="addEventForm.controls['name'].hasError('minlength')">Minimum length must be 3.</label><br>
+						<label [ngClass]="{ 'has-error' : addEventForm.controls.name.invalid && requiredFlag}" *ngIf="addEventForm.controls.name.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group">
+						<label>Description</label>
+						<textarea type="text" class="form-control" style="resize:none" rows="3" maxlength = "5000" (keyup)="countLength()" placeholder="Enter description" formControlName="description"></textarea>
+						<small  *ngIf="descriptionLength == 5000"> Note : description exceeds 5000 chars..</small>
+					</div>
+					<div class="label-status">
+						<label>Activate/Deactivate</label>
+						<ui-switch size="small" formControlName="isActive" (change)="changeStatus($event)"></ui-switch>
+					</div>
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer">
+				</div>
+				<!-- /.box-footer-->
+			</div>
+			<!-- /.box -->
+			<tr>
+				<td>
+					<div class="form-group">
+						<div class="btn-group inlinebtn">
+							<button type="submit" class="btn btn-success" [disabled]="buttonText == CONSTANTS.SUBMITTING">{{buttonText}}</button>
+							<button type="button" class="btn btn-info" (click) = "back()">Back</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</form>
+	</section>
+	<!-- /.content -->
+</div>

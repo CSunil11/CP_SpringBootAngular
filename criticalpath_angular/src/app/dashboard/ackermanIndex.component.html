@@ -1,0 +1,42 @@
+<div class="acermans-page">
+  <div class="box_shadow">
+    <div class="container">
+      <nav class="top_navbar navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" [routerLink]="['/ackermanPage']"><img class="header_image" src="../../assets/images/RM_Desktop/logo.svg" alt="logo"  height="36"></a>
+        <div class="navbar" role="navigation">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+            </div>
+            <div class="navbar-collapse collapse navbar-right">
+              <ul class="nav navbar-nav">
+                <li class="active">
+                  <a [routerLink]="['/ackermanPage']"> HOME </a>
+                </li>
+                <li>
+                  <a href="javascript:void(0)" (click)="logout()"> SIGN OUT </a>
+                </li>              
+              </ul>
+            </div>
+            <!--/.nav-collapse --> 
+            <!--/.container-fluid --> 
+          </div>
+      </nav>
+    </div>
+  </div>
+  <div class="section homepage pageHeight">
+  	<div class="container">
+  		<div class="section_padding text-center">
+  			<h2 class="color_white">WELCOME TO THE CRITICAL PATH</h2>
+  			<p class="color_white">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+  			<div class="div_padding text-center">
+  				<button class="btn-lg button_design" [routerLink]="['/ackermanPage/ackermanViewAllBranchesComponent']">VIEW BRANCHES</button>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+  <div id="footer" class="footer">
+  	<div class="container">
+  		<p>ALL RIGHTS RESERVED 2013 - 2019</p>
+  	</div>
+  </div>
+</div>

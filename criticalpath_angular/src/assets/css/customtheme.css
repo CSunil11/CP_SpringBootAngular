@@ -1,0 +1,41 @@
+/* html, body, .wrapper{height: 100% !important;max-height: 100% !important;} */
+/* .datepicker.datepicker-dropdown.dropdown-menu {
+    z-index: 999 !important;
+} */
+.w100{width: 100%;}
+.content-wrapper{position: relative; min-height: 90vh};
+.plr{padding-left: 0;padding-right: 0;}
+.ptb{padding-top: 0;padding-bottom: 0;}
+.p0{padding: 0;}
+.pb5{padding-bottom: 5px;}
+.label-status label{vertical-align: top;padding-right: 5px;}
+.modal .btn-default{margin: 0 5px;}
+.search-label{float:left;margin-right:7px;font-weight: 400;margin-top: 4px;}
+.box-body .tagblock .form-control tag, .box-body .tagblock .form-control .ng2-tag-input__text-input{height: 25px;line-height: 20px;}
+.box-body .tagblock tag-input.form-control{height: auto;padding: 0;}
+.box-body .bootstrap3-info[_ngcontent-c10] tag[_ngcontent-c10] {height: 25px;line-height: 20px;}
+.box-body .tagblock > .form-control > .ng2-tag-input.bootstrap3-info {padding: 6px 12px 0px;box-shadow: none !important;border: 0 !important;top: -3px;background-color: transparent;height: auto;line-height: 25px;font-size: 80%;}
+.box-body .bootstrap3-info delete-icon svg{height: 20px !important;}
+.box-body .tagblock > .form-control > .ng2-tag-input.bootstrap3-info .ng2-tag-input__text-input[_ngcontent-c13]{height: 25px ;line-height: 25px;}
+.box-body .tagblock > .form-control > .ng2-tag-input.bootstrap3-info .ng2-menu-item[_ngcontent-c15]{vertical-align: top;padding: 0 7px;background: transparent;height: 25px;}
+.inlinebtn .btn{margin: 5px;}
+.m2px{margin: 2px;}
+.table-btn-colwidth{width: 12.7%;text-align: center;}
+
+/* .login{background-color: #d2d6de;} */
+.error-page .media .media-middle .text-yellow, .error-page .media .media-middle {font-size: 90px;}
+.error-page .media .media-body{width: auto;}
+.error-page .media .media-body, .error-page .media .media-left, .error-page .media .media-right{vertical-align: middle;}
+.error-page{width: auto;margin: 0;position: absolute;left: 50%;top: 50%;transform: translate(-50%, -50%);}
+
+.passwordblock{position: relative;}
+.passwordblock i{bottom: 25px;
+    position: relative;
+    float: right;
+    right: 15px;}
+
+.brandUser {display: block; margin: auto;}
+.successlogs{color: green;}
+.errorlogs{color: red;}
+.scroll{height: 500px; overflow-y: scroll};
+

@@ -1,0 +1,108 @@
+import { RouterModule, Routes } from '@angular/router';
+
+//export const HOME = '';
+export const LOGIN = 'login';
+export const LINKS = 'links';
+export const ACCESS_DENIED = 'accessDenied';
+export const NOT_AUTHORIZED = 'notAuthorized';
+export const USER_DETAIL = 'userDetails';
+export const LAYOUT = '';
+export const DASHBOARD = 'dashboard';
+export const SYSTEM_SETTING = 'systemSetting';
+export const COUNTRY = 'manageCountry';
+export const ADD_COUNTRY = 'manageCountry/addCountry';
+export const EDIT_COUNTRY = 'manageCountry/editCountry/:id';
+export const PROVINCE = 'manageProvince';
+export const ADD_PROVINCE = 'manageProvince/addProvince';
+export const EDIT_PROVINCE = 'manageProvince/editProvince/:id';
+export const LOCATIONDIVISION = 'manageLocationDivision';
+export const ADD_LOCATIONDIVISION = 'manageLocationDivision/addLocationDivision';
+export const EDIT_LOCATIONDIVISION = 'manageLocationDivision/editLocationDivision/:id';
+export const TASK_STATUS = 'manageTaskStatus';
+export const ADD_TASK_STATUS = 'manageTaskStatus/addTaskStatus';
+export const EDIT_TASK_STATUS = 'manageTaskStatus/editTaskStatus/:id';
+export const EVENT = 'manageEvent';
+export const ADD_EVENT = 'manageEvent/addEvent';
+export const EDIT_EVENT = 'manageEvent/editEvent/:id';
+export const WEBHOOK = 'manageWebhook';
+export const ADD_WEBHOOK = 'manageWebhook/addWebhook';
+export const EDIT_WEBHOOK = 'manageWebhook/editWebhook/:id';
+export const DAYS_OF_WEEK = 'manageDaysOfWeek';
+export const EDIT_DAYS_OF_WEEK = 'manageDaysOfWeek/editDaysOfWeek/:id';
+export const BRAND = 'manageBrand';
+export const ADD_BRAND = 'manageBrand/addBrand';
+export const EDIT_BRAND = 'manageBrand/editBrand/:id';
+export const STORE = 'manageStore';
+export const ADD_STORE = 'manageStore/addStore';
+export const EDIT_STORE = 'manageStore/editStore/:id';
+export const CLOSED_DATE = 'manageClosedDate';
+export const ADD_CLOSED_DATE = 'manageClosedDate/addClosedDate';
+export const EDIT_CLOSED_DATE = 'manageClosedDate/editClosedDate/:id';
+export const STOCK_TAKE_CYCLE = 'manageStockTakeCycle';
+export const ADD_STOCK_TAKE_CYCLE = 'manageStockTakeCycle/addStockTakeCycle';
+export const EDIT_STOCK_TAKE_CYCLE = 'manageStockTakeCycle/editStockTakeCycle/:id';
+export const CRITICAL_PATH = 'manageCriticalPath';
+export const ADD_CRITICAL_PATH = 'manageCriticalPath/addCriticalPath';
+export const EDIT_CRITICAL_PATH = 'manageCriticalPath/editCriticalPath/:id';
+export const BRAND_USER = 'manageBrandUser';
+export const ADD_BRAND_USER = 'manageBrandUser/addBrandUser';
+export const EDIT_BRAND_USER = 'manageBrandUser/editBrandUser/:id';
+export const MANAGENOTIFICATION = 'manageNotification';
+export const ADD_MANAGENOTIFICATION = 'manageNotification/addManageNotification';
+export const EDIT_MANAGENOTIFICATION = 'manageNotification/editManageNotification/:id';
+export const ACKERMANPAGE = 'ackermanPage';
+export const VIEWALLSTOCKCYCLE = 'viewAllStockCycles/:cycleStartBy/:startDate/:storeId/:stokeDate';
+export const API_LOG = 'apiLog';
+export const AOP_LOG = 'aopLog';
+export const PAGE_NOT_FOUND = '**';
+/**
+ * All routs
+ */
+export const routes: Routes = [
+   { path: "", loadChildren: './constants/submodules/login.module#LoginModule'},
+   { path: ACKERMANPAGE, loadChildren: './constants/submodules/ackerman.module#AckermanModule'},
+   { path: LOGIN, loadChildren: './constants/submodules/login.module#LoginModule'},
+   { path: VIEWALLSTOCKCYCLE, loadChildren: './constants/submodules/viewAllStockCycles.module#ViewAllStockCyclesModule'},
+   { path: LAYOUT, loadChildren: './constants/submodules/layout.module#LayoutModule'},
+   { path: DASHBOARD, loadChildren: './constants/submodules/dashboard.module#DashboardModule'},
+   { path: SYSTEM_SETTING, loadChildren: './constants/submodules/systemSetting.module#SystemSettingModule'},
+   { path: COUNTRY, loadChildren: './constants/submodules/country.module#CountryModule'},
+   { path: ADD_COUNTRY, loadChildren: './constants/submodules/addCountry.module#AddCountryModule'},
+   { path: EDIT_COUNTRY, loadChildren: './constants/submodules/editCountry.module#EditCountryModule'},
+   { path: TASK_STATUS, loadChildren: './constants/submodules/taskStatus.module#TaskStatusModule'},
+   { path: ADD_TASK_STATUS, loadChildren: './constants/submodules/addTaskStatus.module#AddTaskStatusModule'},
+   { path: EDIT_TASK_STATUS, loadChildren: './constants/submodules/editTaskStatus.module#EditTaskStatusModule'},
+   { path: ACCESS_DENIED, loadChildren: './constants/submodules/accessDenied.module#AccessDeniedModule'},
+   { path: NOT_AUTHORIZED, loadChildren: './constants/submodules/notAuthorized.module#NotAuthorizedModule'},
+   { path: EVENT, loadChildren: './constants/submodules/event.module#EventModule'},
+   { path: ADD_EVENT, loadChildren: './constants/submodules/addEvent.module#AddEventModule'},
+   { path: EDIT_EVENT, loadChildren: './constants/submodules/editEvent.module#EditEventModule'},
+   { path: WEBHOOK, loadChildren: './constants/submodules/webhook.module#WebhookModule'},
+   { path: ADD_WEBHOOK, loadChildren: './constants/submodules/addWebhook.module#AddWebhookModule'},
+   { path: EDIT_WEBHOOK, loadChildren: './constants/submodules/editWebhook.module#EditWebhookModule'},
+   { path: DAYS_OF_WEEK, loadChildren: './constants/submodules/daysOfWeek.module#DaysOfWeekModule'},
+   { path: BRAND, loadChildren: './constants/submodules/brand.module#BrandModule'},
+   { path: ADD_BRAND, loadChildren: './constants/submodules/addBrand.module#AddBrandModule'},
+   { path: EDIT_BRAND, loadChildren: './constants/submodules/editBrand.module#EditBrandModule'},
+   { path: STORE, loadChildren: './constants/submodules/store.module#StoreModule'},
+   { path: ADD_STORE, loadChildren: './constants/submodules/addStore.module#AddStoreModule'},
+   { path: EDIT_STORE, loadChildren: './constants/submodules/editStore.module#EditStoreModule'},
+   { path: CLOSED_DATE, loadChildren: './constants/submodules/closedDate.module#ClosedDateModule'},
+   { path: ADD_CLOSED_DATE, loadChildren: './constants/submodules/addClosedDate.module#AddClosedDateModule'},
+   { path: EDIT_CLOSED_DATE, loadChildren: './constants/submodules/editClosedDate.module#EditClosedDateModule'},
+   { path: STOCK_TAKE_CYCLE, loadChildren: './constants/submodules/stockTakeCycle.module#StockTakeCycleModule'},
+   { path: ADD_STOCK_TAKE_CYCLE, loadChildren: './constants/submodules/addStockTakeCycle.module#AddStockTakeCycleModule'},
+   { path: EDIT_STOCK_TAKE_CYCLE, loadChildren: './constants/submodules/editStockTakeCycle.module#EditStockTakeCycleModule'},
+   { path: CRITICAL_PATH, loadChildren: './constants/submodules/criticalPath.module#CriticalPathModule'},
+   { path: ADD_CRITICAL_PATH, loadChildren: './constants/submodules/addCriticalPath.module#AddCriticalPathModule'},
+   { path: EDIT_CRITICAL_PATH, loadChildren: './constants/submodules/editCriticalPath.module'},
+   { path: BRAND_USER, loadChildren: './constants/submodules/brandUser.module#BrandUserModule'},
+   { path: ADD_BRAND_USER, loadChildren: './constants/submodules/addBrandUser.module#AddBrandUserModule'},
+   { path: EDIT_BRAND_USER, loadChildren: './constants/submodules/editBrandUser.module#EditBrandUserModule'},
+   { path: API_LOG, loadChildren: './constants/submodules/apiLog.module#ApiLogModule'},
+   { path: AOP_LOG, loadChildren: './constants/submodules/aopLog.module#AopLogModule'},
+   { path: MANAGENOTIFICATION, loadChildren: './constants/submodules/manageNotification.module#ManageNotificationModule'},
+   { path: ADD_MANAGENOTIFICATION, loadChildren: './constants/submodules/addManageNotification.module#AddManageNotificationModule'},
+   { path: EDIT_MANAGENOTIFICATION, loadChildren: './constants/submodules/editManageNotification.module#EditManageNotificationModule'},
+   { path: PAGE_NOT_FOUND, loadChildren: './constants/submodules/pageNotFound.module#PageNotFoundModule'},
+];

@@ -1,0 +1,123 @@
+ <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Webhook
+      </h1>
+      <tr><br><br><br>
+		 <td *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'">
+         	<button type="button" class="btn btn-block btn-success" (click) = "addNewWebhook()">Add New</button>
+         </td>
+      </tr>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-header">
+          <div class="row">
+					<div class="col-sm-4">
+						<h3 class="box-title">List of Webhook</h3>
+					</div>
+					<div class ="col-sm-4 loaderadmin text-center">
+						<div *ngIf="showLoader">
+							<i  class="fa fa-spin fa-refresh" ></i>&nbsp; Loading...
+						</div>
+	  				</div>
+					<div class="col-sm-4 text-right">
+						<div class="checkbox" style="margin: 0;">
+							<label>
+				    			<input
+				  				 type="checkbox"
+				  				 name="showrecord"
+				 				 [checked]="showDeleteRecord"
+				 				 (change)="showDeletedRecord()"/>Show Deleted/Inactive Records
+							</label> 
+						</div>
+					</div>
+			</div>
+        </div>
+        <div class="box-body">
+       	<div *ngIf="deleted" class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="delete=undefined">×</button>
+						Webhook Deleted Successfully!
+		</div>
+		<div *ngIf="restored" class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="restored=undefined">×</button>
+						Webhook Restored Successfully!
+		</div>
+         <table id="webhookTable" class="table table-bordered table-striped">
+                <thead>
+	                <tr>
+	                  <th>URL</th>
+	                  <th>Method</th>
+	                  <th>Event</th>
+	                  <th *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'">Action</th>
+	                </tr>
+                </thead>
+                <tbody>
+                	 <tr *ngFor="let webhookData of webhookList">
+                     	<td>{{webhookData.url}}</td>
+                     	<td>{{webhookData.method}}</td>
+                     	<td>{{webhookData.event.name}}</td>
+                     	<td *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'" class="table-btn-colwidth"> 
+	                     	<div class="btn-group inlinebtn">
+		              			<button *ngIf = "!webhookData.isDelete"  class="btn btn-xs btn-info" [routerLink]="['/manageWebhook/editWebhook', webhookData.id]">
+		                			<i class="fa fa-edit"></i> Edit
+		              			</button>
+		              			<button *ngIf = "!webhookData.isDelete" class="btn btn-xs btn-danger"
+										[disabled]="webhookData.isDelete" data-toggle="modal"
+										data-target="#modal-default" data-id="'webhookData.id'"
+										(click)="getId(webhookData.id)">
+										<i class="fa fa-trash"></i> Delete
+								</button>
+								<button *ngIf = "webhookData.isDelete" class="btn btn-xs btn-success" (click) = "restoreWebhook(webhookData.id)" [disabled]="webhookData.isActive">
+		                			<i class="fa fa-file"></i> Restore
+		              			</button>
+		              		</div>
+              			</td>
+                     </tr>
+                </tbody>
+         </table>
+                
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+        </div>
+        <!-- /.box-footer-->
+      </div>
+      <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  <div class="modal fade" id="modal-default">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h3 class="modal-title">Store</h3>
+			</div>
+			<div class="modal-body">
+				<h4>
+					<p>Are you sure you want to delete the record?</p>
+				</h4>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-right"
+					data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+					(click)="deleteWebhook()">Yes</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

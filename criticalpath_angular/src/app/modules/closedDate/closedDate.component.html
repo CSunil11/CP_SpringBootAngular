@@ -1,0 +1,129 @@
+ <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+      	 Non Trading Date
+      </h1>
+      <tr><br><br><br>
+		 <td *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'">
+         	<button type="button" class="btn btn-block btn-success" (click) = "addNewClosedDate()">Add New</button>
+         </td>
+      </tr>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-header">
+         <!--  <h3 class="box-title">List of Store Closed Date</h3> -->
+        	 <div class="row">
+					<div class="col-sm-4">
+						<h3 class="box-title">List of Non Trading Date</h3>
+					</div>
+					<div class ="col-sm-4 loaderadmin text-center">
+						<div *ngIf="showLoader">
+							<i  class="fa fa-spin fa-refresh" ></i>&nbsp; Loading...
+						</div>
+	  				</div> 
+					<div class="col-sm-4 text-right">
+						<div class="checkbox" style="margin: 0;">
+							<label>
+				    			<input
+				  				 type="checkbox"
+				  				 name="showrecord"
+				 				 [checked]="showDeleteRecord"
+				 				 (change)="showDeletedRecord()"/>Show Deleted/Inactive Records
+							</label> 
+						</div>
+					</div>
+			</div>
+
+        </div>
+        <div class="box-body">
+       	<div *ngIf="deleted" class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="delete=undefined">×</button>
+						Non Trading Date Deleted Successfully!
+		</div>
+		<div *ngIf="restored" class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="restored=undefined">×</button>
+						Non Trading Date Restored Successfully!
+		</div>
+         <table id="closedDateTable" class="table table-bordered table-striped">
+                <thead>
+	                <tr>
+	                  <th>Name</th>
+	                  <th>Description</th>
+	                  <th>Date</th>
+	                  <th>Branches</th>
+	                  <th *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'">Action</th>
+	                  <!-- <th></th> -->
+	                </tr>
+                </thead>
+                <tbody>
+                	 <tr *ngFor="let closedDateData of closedDateList">
+                     	<td>{{closedDateData.name}}</td>
+                     	<td>{{closedDateData.description}}</td>
+                     	<td>{{closedDateData.closeDate | date: 'dd/MM/yyyy' }}</td>
+                     	<td>
+                     		<ul  class="list-inline"><li *ngFor="let storeName of closedDateData.stores" class="label label-info m2px">{{storeName.name}}</li></ul>
+                     	</td>
+              			<td *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'" class="table-btn-colwidth"> 
+	              			<div class="btn-group inlinebtn">
+		              				<button *ngIf = "!closedDateData.isDelete" type="button" class="btn btn-xs btn-info" [routerLink]="['/manageClosedDate/editClosedDate', closedDateData.id]">
+			                			<i class="fa fa-edit"></i> Edit
+			              			</button>
+			              			<button  type="button" *ngIf = "!closedDateData.isDelete" class="btn btn-xs btn-danger"
+										    data-toggle="modal"
+											data-target="#modal-default" data-id="'closedDateData.id'"
+											(click)="storeId(closedDateData.id)">
+										<i class="fa fa-trash"></i> Delete
+									</button>
+									<button type="button" *ngIf = "closedDateData.isDelete" class="btn btn-xs btn-success" (click) = "restoreClosedDate(closedDateData.id)">
+			                			<i class="fa fa-file"></i> Restore
+			              			</button>
+		              		</div>
+              			</td>
+                     </tr>
+                </tbody>
+         </table>
+                
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+        </div>
+        <!-- /.box-footer-->
+      </div>
+      <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  <div class="modal fade" id="modal-default">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h3 class="modal-title">Non Trading Date</h3>
+			</div>
+			<div class="modal-body">
+				<h4>
+					<p>Are you sure you want to delete the record?</p>
+				</h4>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-right"
+					data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+					(click)="deleteClosedDate()">Yes</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

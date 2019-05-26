@@ -1,0 +1,180 @@
+
+
+
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>Location Division</h1>
+		<br>
+		<div class="row">
+			<div *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'" class="col-sm-6 btn-group inlinebtn">
+				<button type="button" class="btn btn-success"
+					(click)="addNewLocationDivision()">Add New</button>
+			</div>
+			<div class="col-sm-6"></div>
+		</div>
+		<div *ngIf="error && error.length > 0" class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="error=undefined">×</button>
+						{{error}}
+		</div>
+		<div *ngIf="restored" class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="restored=undefined">×</button>
+						Location Division Restored Successfully!
+		</div>
+		<div *ngIf="deleted" class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="deleted=undefined">×</button>
+						Location Division deleted Successfully!
+		</div>
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+
+		<!-- Default box -->
+		<div class="box">
+			<div class="box-header">
+				<!-- <h3 class="box-title">List of Location Division</h3> -->
+				<div class="row">
+					<div class="col-sm-4">
+						<h3 class="box-title">List of Location Division</h3>
+					</div>
+					<div class ="col-sm-4 loaderadmin text-center">
+						<div *ngIf="showLoader">
+							<i  class="fa fa-spin fa-refresh" ></i>&nbsp; Loading...
+						</div>
+	  				</div> 
+					<div class="col-sm-4 text-right">
+						<div class="checkbox" style="margin: 0;">
+							<label>
+				    			<input
+				  				 type="checkbox"
+				  				 name="showrecord"
+				 				 [checked]="showDeleteRecord"
+				 				 (change)="ShowDeleteRecord()"/>Show Deleted/Inactive Records
+							</label> 
+						</div>
+					</div> 
+				</div>
+			</div>
+			<div class="box-body">
+			  <div class="row">
+					<div class="col-xs-6 col-sm-3 pull-right pb5">
+						<div class ="table-search  pull-right">
+					    	<label class="search-label">Search :</label>       
+						    <div class="input-group">   
+						     	<input placeholder="Search By Name" class="form-control input-sm" type="text" name="searchText"
+								[(ngModel)]="locDivSearchParam.searchString"
+								 title="Search By Name"
+								(keyup)="searchLocDivByName(false)"> <a
+								href="javascript:void(0)"></a>                                          
+						    </div>   
+					    </div>
+					</div>
+				</div>
+				<table id="locationDivisionTable" class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Country</th>
+							<th>Province</th>
+							<th>DSMUser</th>
+							<!-- <th>RAMUser</th> -->
+							<th *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let locationDivisionData of locationDivisionList">
+							<td>{{locationDivisionData.name}}</td>
+							<td title="Country is inactive" *ngIf="!locationDivisionData?.country?.isActive">{{locationDivisionData?.country?.name}} <i class="fa fa-exclamation-circle text-red"></i></td>
+							<td *ngIf="locationDivisionData?.country?.isActive">{{locationDivisionData?.country?.name}}</td>
+							<!-- <td>{{locationDivisionData.province?.name}}</td> -->
+							
+							<td title="Province is inactive" *ngIf=" locationDivisionData.province !== null && locationDivisionData?.province?.isDelete"> <i class="fa fa-exclamation-circle text-red"></i></td>
+							<td *ngIf="locationDivisionData.province !== null && locationDivisionData?.province?.isActive">{{locationDivisionData?.province?.name}}</td>
+							<td *ngIf="locationDivisionData.province === null"> </td>
+							<!-- <td>{{locationDivisionData.divisionalSalesManagers?.name}}</td> -->
+							
+							<td title="Divisional Sales Managers is inactive" *ngIf=" locationDivisionData.divisionalSalesManagers !== null && locationDivisionData?.divisionalSalesManagers?.isDelete"> <i class="fa fa-exclamation-circle text-red"></i></td>
+							<td *ngIf="locationDivisionData.divisionalSalesManagers !== null && locationDivisionData?.divisionalSalesManagers?.isActive">{{locationDivisionData?.divisionalSalesManagers?.name}}</td>
+							<td *ngIf="locationDivisionData.divisionalSalesManagers === null"> </td>
+						<!-- 	<td>{{locationDivisionData.regionalManagers?.name}}</td> -->
+						
+						   <!--  <td title="Regional Manager is inactive" *ngIf=" locationDivisionData.regionalManagers !== null && locationDivisionData?.regionalManagers?.isDelete"> <i class="fa fa-exclamation-circle text-red"></i></td>
+							<td *ngIf="locationDivisionData.regionalManagers !== null && locationDivisionData?.regionalManagers?.isActive">{{locationDivisionData?.regionalManagers?.name}}</td>
+							<td *ngIf="locationDivisionData.regionalManagers === null"> </td> -->
+							<td *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'" class="table-btn-colwidth">
+								<div class="btn-group inlinebtn">
+									<button *ngIf = "!locationDivisionData.isDelete" class="btn btn-xs btn-info"
+										[routerLink]="['/manageLocationDivision/editLocationDivision', locationDivisionData.id]">
+										<i class="fa fa-edit"></i> Edit
+									</button> 
+									<button *ngIf = "!locationDivisionData.isDelete" class="btn btn-xs btn-danger"
+										data-toggle="modal"
+										data-target="#modal-default" data-id="'locationDivisionData.id'"
+										(click)="storeId(locationDivisionData.id)">
+										<i class="fa fa-trash"></i> Delete
+									</button>
+									<button *ngIf = "locationDivisionData.isDelete" class="btn btn-xs btn-success"
+										(click)="restoreLocationDivision(locationDivisionData.id)">
+										<i class="fa fa-file"></i> Restore
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot *ngIf="(locationDivisionList?.length === 0) || (locDivSearchResults === undefined)">
+						<tr class="text-center"><td valign="top" colspan="7" class="">No matching records found</td></tr>
+					</tfoot>
+				</table>
+				<div>
+					<pagination class="pull-right"
+						[(ngModel)]="locDivSearchParam.pageNo"
+						[maxSize]="paginationConfig.maxSize"
+						[totalItems]="paginationConfig.totalElements"
+						[rotate]="paginationConfig.rotate" align="paginationConfig.align"
+						[firstText]="paginationConfig.firstText"
+						[previousText]="paginationConfig.previousText"
+						[nextText]="paginationConfig.nextText"
+						[lastText]="paginationConfig.lastText"
+						[itemsPerPage] = "paginationConfig.itemsPerPage"
+						(pageChanged)="pageChanged($event)"> </pagination>
+				</div>
+
+			</div>
+			<!-- /.box-body -->
+			<div class="box-footer"></div>
+			<!-- /.box-footer-->
+		</div>
+		<!-- /.box -->
+
+	</section>
+	<!-- /.content -->
+</div>
+
+<div class="modal fade" id="modal-default">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h3 class="modal-title">Location Division</h3>
+			</div>
+			<div class="modal-body">
+				<h4>
+					<p>Are you sure you want to delete the record?</p>
+				</h4>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-right"
+					data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+					(click)="deleteLocationDivision()">Yes</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

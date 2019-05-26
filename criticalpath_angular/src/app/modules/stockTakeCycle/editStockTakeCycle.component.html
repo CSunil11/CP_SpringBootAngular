@@ -1,0 +1,145 @@
+
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header">
+		<h1>Stock Take Cycle</h1>
+		<!-- <ol class="breadcrumb">
+			<li><a href="#" [routerLink]="['/manageStockTakeCycle']"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="#">Examples</a></li>
+			<li class="active">Blank page</li>
+		</ol> -->
+	</section>
+
+	<!-- Main content -->
+	<section class="content">
+		<form #add="ngForm" [formGroup]="editStockTakeCycleForm"
+			(ngSubmit)="submitStockTakeCycleForm(editStockTakeCycleForm.value)">
+			<!-- Default box -->
+			<div class="box">
+				<div class="box-header with-border">
+					<h3 class="box-title">Edit Stock Take Cycle</h3>
+				</div>
+				<div class="box-body">
+					<div *ngIf="error && error.length > 0" class="alert alert-danger alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="error=undefined">×</button>
+						{{error}}
+					</div>
+					<div *ngIf="stockTakeCycleEdited"  class="alert alert-success alert-dismissible">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true" (click)="stockTakeCycleEdited=false">×</button>
+						Stock Take Cycle edited successfully!
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : editStockTakeCycleForm.controls.name.invalid && requiredFlag}">
+						<label>Name<span style="color:red;">*</span></label> 
+						<input type="text" class="form-control" placeholder="Enter Name" formControlName="name" required>
+						<label [ngClass]="{ 'has-error' : editStockTakeCycleForm.controls.name.invalid && requiredFlag}" *ngIf="editStockTakeCycleForm.controls.name.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group" [ngClass]="{ 'has-error' : editStockTakeCycleForm.controls.length.invalid && requiredFlag}">
+						<label>Stock take cycle length<span style="color:red;">*</span></label> 
+						<input type="number" class="form-control" placeholder="Enter Length" formControlName="length" required
+						        min="1"  oninput="validity.valid||(value='');">
+						<label [ngClass]="{ 'has-error' : editStockTakeCycleForm.controls.length.invalid && requiredFlag}" *ngIf="editStockTakeCycleForm.controls.length.invalid && requiredFlag">This field is required.</label>
+					</div>
+					<div class="form-group tagblock">
+						<label>Do not count</label>
+						<!-- <select class="form-control" formControlName="doNotCount" readonly="readonly">
+							<option value="" selected>Select value</option>
+                    		<option [value] = "days.name" *ngFor = " let days of daysList">{{days.name}}</option>
+                  		</select> -->
+                  		<tag-input  class="form-control" formControlName="doNotCount" theme='bootstrap3-info'  [identifyBy]="'id'" [displayBy]="'name'" 
+								[blinkIfDupe]="true"
+								[clearOnBlur]="true"
+								[onlyFromAutocomplete]="true"
+								[placeholder]="'Select doNotCount'" 
+								[secondaryPlaceholder] = "'Select doNotCount'">
+							<tag-input-dropdown [showDropdownIfEmpty]="true"
+										[focusFirstElement]="false"
+                        				[displayBy]="'name'"
+                        				[appendToBody] = "false"
+										[keepOpen]="false"
+										[identifyBy]="'id'"
+										[limitItemsTo]="'7'"
+                        				 [autocompleteItems]="daysList" theme='dark'>
+                        				 <ng-template let-item="item" let-index="index">
+                                             {{ item.name }}
+                                         </ng-template>
+    						</tag-input-dropdown>
+    					 </tag-input> 
+                  		
+                  	<!-- 	<label [ngClass]="{ 'has-error' : editStockTakeCycleForm.controls.doNotCount.invalid && requiredFlag}" *ngIf="editStockTakeCycleForm.controls.doNotCount.invalid && requiredFlag">This field is required.</label> -->
+					</div>
+					<div class="form-group tagblock" [ngClass]="{ 'has-error' : editStockTakeCycleForm.controls.brand.invalid && requiredFlag}">
+						<label>Company<span style="color:red;">*</span></label>
+						<tag-input required class="form-control" formControlName="brand" theme='bootstrap3-info'  [identifyBy]="'id'" [displayBy]="'name'" 
+								[blinkIfDupe]="true"
+								[clearOnBlur]="true"
+								[onlyFromAutocomplete]="true"
+								(onRemove) = "removeBrand($event)"
+								(onAdd)="getStoreByBrand($event)"
+								[placeholder]="'Select Company'" 
+								[secondaryPlaceholder] = "'Select Company'">
+							<tag-input-dropdown [showDropdownIfEmpty]="true"
+										[focusFirstElement]="false"
+                        				[displayBy]="'name'"
+                        				[appendToBody] = "false"
+										[keepOpen]="false"
+										[identifyBy]="'id'"
+										[limitItemsTo]="'7'"
+                        				 [autocompleteItems]="brandList" theme='dark'>
+                        				 <ng-template let-item="item" let-index="index">
+                                             {{ item.name }}
+                                         </ng-template>
+    						</tag-input-dropdown>
+    					 </tag-input> 
+    					 <label [ngClass]="{ 'has-error' : editStockTakeCycleForm.controls.brand.invalid && requiredFlag}" *ngIf="editStockTakeCycleForm.controls.brand.invalid && requiredFlag">This field is required.</label>
+    			    </div>
+					<div class="form-group tagblock" [ngClass]="{ 'has-error' : editStockTakeCycleForm.controls.stores.invalid && requiredFlag}">
+						<label>Branches<span style="color:red;">*</span> <span style="margin-left: 15px;"><input type="checkbox" value="" 
+										(change)="selectCheckBox($event)"></span>  Select All </label>
+						<tag-input required class="form-control" formControlName=stores theme='bootstrap3-info'  [identifyBy]="'id'" [displayBy]="'name'" 
+								[blinkIfDupe]="true"
+								[clearOnBlur]="true"
+								(onAdd) = "addStore()"
+								(onRemove) = "removeStore($event)"
+								[onlyFromAutocomplete]="true"
+								[placeholder]="'Select Branch'"
+								[secondaryPlaceholder] = "'Select Branch'">
+							<tag-input-dropdown [showDropdownIfEmpty]="true"
+										[focusFirstElement]="false"
+                        				[displayBy]="'name'"
+                        				[appendToBody] = "false"
+										[keepOpen]="false"
+										[identifyBy]="'id'"
+										[limitItemsTo]="'7'"
+                        				 [autocompleteItems]="storeList" theme='dark'>
+                        				 <ng-template let-item="item" let-index="index">
+                                             {{ item.name }}
+                                         </ng-template>
+    						</tag-input-dropdown>
+    					 </tag-input>
+    					 <label [ngClass]="{ 'has-error' : editStockTakeCycleForm.controls.stores.invalid && requiredFlag}" *ngIf="editStockTakeCycleForm.controls.stores.invalid && requiredFlag">This field is required.</label> 
+					</div>
+					<div class="label-status">
+						<label>Activate/Deactivate</label>
+						<ui-switch size="small" formControlName="isActive" (change)="changeStatus($event)"></ui-switch>
+					</div>
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer">
+				</div>
+				<!-- /.box-footer-->
+			</div>
+			<!-- /.box -->
+			<tr>
+				<td>
+					<div class="form-group">
+						<div class="btn-group inlinebtn">
+							<button type="submit" class="btn btn-success" [disabled]="buttonText == CONSTANTS.SUBMITTING">{{buttonText}}</button>
+							<button type="button" class="btn btn-info" (click) = "back()">Back</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</form>
+	</section>
+	<!-- /.content -->
+</div>

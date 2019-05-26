@@ -1,0 +1,40 @@
+<div class="acermans-page">
+  <div class="login_page">
+    <div class="bg_green">
+        <div class="container relative">
+          <h2 class="text-center white">CRITICAL PATH</h2>
+        </div>
+    </div>
+    <div class="container">
+        <div class="login_box">
+          <img src="../../assets/images/RM_Desktop/logo.svg" width="200px"  height="36">
+          <h3 class="text-center">LOGIN</h3>
+          <div *ngIf="error && error.length > 0"
+            class="alert alert-danger alert-dismissible mt-3">
+            <button type="button" class="close"></button>
+            {{error}}
+          </div>
+          <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+          	<div [ngClass]="{ 'has-error' : (loginForm.controls.agentId.invalid && requiredFlag) || loginForm.controls['agentId'].hasError('pattern')}">
+            	<input type="email" name="agentId" class="form-control"
+					     placeholder="Email" formControlName="agentId"
+					     pattern="^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$"
+					     required>
+					     <label
+      					[ngClass]="{ 'has-error' : (loginForm.controls.agentId.invalid && requiredFlag) || loginForm.controls['agentId'].hasError('pattern')}"
+      					*ngIf="(loginForm.controls.agentId.invalid && requiredFlag) || loginForm.controls['agentId'].hasError('pattern')"> Please enter valid email. </label>
+            </div>
+            <br>
+            <div [ngClass]="{ 'has-error' : loginForm.controls.password.invalid && requiredFlag }">
+            	<input type="password" class="form-control" placeholder="Password"
+					     formControlName="password" required>
+              <label [ngClass]="{ 'has-error' : loginForm.controls.password.invalid && requiredFlag }"
+              *ngIf="loginForm.controls.password.invalid && requiredFlag"> This field is required. </label>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-lg btn-success">SIGN IN</button>
+          </form>      
+      </div>
+    </div>
+  </div>
+</div>

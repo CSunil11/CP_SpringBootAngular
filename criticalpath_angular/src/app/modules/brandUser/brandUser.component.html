@@ -1,0 +1,247 @@
+
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<section class="content-header" *ngIf="brandObj.length > 0">
+		<h1>Company User</h1>
+		<tr>
+			<br>
+			<br>
+			<br>
+			<td *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'">
+				<button type="button" class="btn btn-block btn-success"
+					(click)="addNew()">Add User</button>
+			</td>
+		</tr>
+	</section>
+
+	<section class="content" *ngIf="brandObj.length == 0">
+
+		<!-- Default box -->
+		<div class="box">
+			<div class="box-body">
+				<h3 class="box-title text-center">No Companies available</h3>
+				<h5 class="box-title text-center">Click to add new</h5>
+				<button type="button" class="btn btn-success brandUser"
+					(click)="addNewBrand()">Add new brand</button>
+			</div>
+
+			<div class="box-body"></div>
+		</div>
+	</section>
+
+	<!-- Main content -->
+	<section class="content" *ngIf="brandObj.length > 0">
+
+		<!-- Default box -->
+		<div class="box">
+			<div class="box-header">
+				<div class="row">
+					<div class="col-sm-4">
+						<h3 class="box-title">List of Company User</h3>
+					</div>
+					<div class ="col-sm-4 loaderadmin text-center">
+						<div *ngIf="showLoader">
+							<i  class="fa fa-spin fa-refresh" ></i>&nbsp; Loading...
+						</div>
+	  				</div> 
+					<div class="col-sm-4 text-right">
+						<div class="checkbox" style="margin: 0;">
+							<label>
+				    			<input
+				  				 type="checkbox"
+				  				 name="showrecord"
+				 				 [checked]="showDeleteRecord"
+				 				 (change)="showDeletedRecord()"/>Show Deleted/Inactive Records
+							</label> 
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="box-body">
+				<div class="row">
+					<div class="col-sm-12 ">
+						<div *ngIf="error && error.length > 0"
+							class="alert alert-danger alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true" (click)="error=undefined">×</button>
+							{{error}}
+						</div>
+						<div *ngIf="deleted" class="alert alert-success alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true" (click)="delete=undefined">×</button>
+							Company User Deleted Successfully!
+						</div>
+						<div *ngIf="restored"
+							class="alert alert-success alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert"
+								aria-hidden="true" (click)="restored=undefined">×</button>
+							Company User Restored Successfully!
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6 col-sm-3 pull-right pb5">
+						<div class="table-search pull-right">
+							<label class="search-label">Search :</label>
+							<div class="input-group">
+								<input class="form-control input-sm" type="text"
+									name="searchText" placeholder="Search By Name or Email"
+									[(ngModel)]="brandUserSearchParam.searchString"
+									title="Search By Name or Email"
+									(keyup)="searchBrandUser(false)">
+							</div>
+						</div>
+					</div>
+					<form [formGroup]="brandUserForm"
+						(ngSubmit)="submitForm(brandUserForm.value)">
+						<div class="col-xs-6 col-sm-9 pull-left pb5">
+							<ul class="list-inline">
+								<li>
+									 <h4 class="search-label">Select Company</h4>
+								<!-- <div class="input-group">								 
+									 <input [typeahead]="brandList" class="form-control"
+										formControlName="brand" type="" placeholder="Enter Brand"
+										[typeaheadMinLength]="0" [typeaheadOptionsInScrollableView]="5"
+										[typeaheadScrollable]="true" (keyup)="searchEvent()"
+										(typeaheadOnSelect)="typeaheadOnSelect($event)" required> 
+									</div>  -->
+									<div style="display:inline-block;width: 200px;">
+									<ng-select [items]="brandList" 
+		   								[active]="[brandList[0]]"
+										[disabled]="disabled"  (data)="refreshValue($event)"
+										(selected)="brandOnSelect($event.id)" 
+										 placeholder="Enter Brand" >
+									</ng-select>
+									
+									</div>
+								</li>
+								<li>
+									<h4 class="search-label">Select UserRole</h4>
+									<div style="display:inline-block;width: 200px;">
+									<ng-select [items]="userRoleList" 
+		   								[active]="[userRoleList[0]]"(data)="refreshRoleValue($event)"
+										(selected)="roleOnSelect($event.id)" 
+										[disabled]="disabled"  
+										 placeholder="Enter UserRole" >
+									</ng-select>
+									
+									</div>
+								</li>
+							</ul> 
+						</div>
+						<!--  <div style="width: 300px; margin-bottom: 20px;">
+							<ng-select [allowClear]="true"   [items]="brandList"
+								[disabled]="disabled" 
+								(selected)="typeaheadOnSelect($event.id)" (removed)="removed($event)"
+								(typed)="typed($event)"  placeholder="Enter Brand">
+							</ng-select>
+						</div> -->
+					</form>
+				</div>
+
+				<table id="brandUserTable"
+					class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Email</th>
+							<th>Role</th>
+							<th>Contact Number</th>
+							<th *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let brandUser of brandUserList">
+						
+							<td>{{brandUser.name}}</td>
+							<td *ngIf = "brandUser.userLogin  == null"></td>
+							<td *ngIf = "brandUser.userLogin  !== null">{{brandUser?.userLogin?.email}}</td>
+							<td *ngIf = "brandUser.userLogin  == null"></td>
+							<td *ngIf="brandUser.userLogin  !== null && brandUser?.userLogin?.role == 'ROLE_RAM_USER'">Risk Admin Manager</td>
+							<td *ngIf="brandUser.userLogin  !== null && brandUser?.userLogin?.role == 'ROLE_DSM_USER'">Divisional Sales
+								Manager</td>
+							<td *ngIf="brandUser.userLogin  !== null && brandUser?.userLogin?.role == 'ROLE_SM_USER'">Store
+								Manager</td>
+							<td>{{brandUser.phone}}</td>
+							<td *ngIf="curUserRole === 'ROLE_SUPER_ADMIN'" class="table-btn-colwidth">
+								<div class="btn-group inlinebtn">
+									<button *ngIf="!brandUser.isDelete" class="btn btn-xs btn-info"
+										[routerLink]="['/manageBrandUser/editBrandUser', brandUser.id]">
+										<i class="fa fa-edit"></i> Edit
+									</button>
+									<button *ngIf="!brandUser.isDelete"
+										class="btn btn-xs btn-danger" data-toggle="modal"
+										data-target="#modal-default" data-id="'brandUser.id'"
+										(click)="storeId(brandUser.id)">
+										<i class="fa fa-trash"></i> Delete
+									</button>
+									<button *ngIf="brandUser.isDelete"
+										class="btn btn-xs btn-success"
+										(click)="restoreBrand(brandUser.id)">
+										<i class="fa fa-file"></i> Restore
+									</button>
+								</div>
+							</td>
+						</tr>
+						<!-- Pagination -->
+					</tbody>
+					<!-- <tfoot *ngIf="!isSearchingBrandUser && (brandUserSearchResults === undefined || brandUserSearchResults.length === 0)">
+							<tr class="text-center"><td valign="top" colspan="7" class="">No matching records found</td></tr>
+						</tfoot> -->
+					<tfoot
+						*ngIf="(brandUserList?.length === 0)">
+						<tr class="text-center">
+							<td valign="top" colspan="7" class="">No User found</td>
+						</tr>
+					</tfoot>
+				</table>
+				<pagination class="pull-right"
+					[(ngModel)]="brandUserSearchParam.pageNo"
+					[maxSize]="paginationConfig.maxSize"
+					[totalItems]="paginationConfig.totalElements"
+					[rotate]="paginationConfig.rotate" align="paginationConfig.align"
+					[firstText]="paginationConfig.firstText"
+					[previousText]="paginationConfig.previousText"
+					[nextText]="paginationConfig.nextText"
+					[lastText]="paginationConfig.lastText"
+					[itemsPerPage] = "paginationConfig.itemsPerPage"
+					(pageChanged)="pageChanged($event)"> </pagination>
+			</div>
+			<!-- /.box-body -->
+			<div class="box-footer"></div>
+			<!-- /.box-footer-->
+		</div>
+		<!-- /.box -->
+
+	</section>
+	<!-- /.content -->
+</div>
+
+<div class="modal fade" id="modal-default">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h3 class="modal-title">Brand User</h3>
+			</div>
+			<div class="modal-body">
+				<h4>
+					<p>Are you sure you want to delete the record?</p>
+				</h4>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default pull-right"
+					data-dismiss="modal">No</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal"
+					(click)="delete()">Yes</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
